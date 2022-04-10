@@ -88,8 +88,8 @@ EcologicalInferenceStrategyCalvo
 \subsection{Method \code{runEcologicalInference()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyCalvo$runEcologicalInference(
-  input.election,
-  output.election
+  input.shares.fields,
+  output.shares.fields
 )}\if{html}{\out{</div>}}
 }
 

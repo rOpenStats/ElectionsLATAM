@@ -97,7 +97,7 @@ EcologicalInferenceProcessor
 \if{latex}{\out{\hypertarget{method-makeSankeyDiagram}{}}}
 \subsection{Method \code{makeSankeyDiagram()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$makeSankeyDiagram(save.output = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$makeSankeyDiagram(output.path = NULL)}\if{html}{\out{</div>}}
 }
 
 }
@@ -116,8 +116,7 @@ EcologicalInferenceProcessor
 \subsection{Method \code{generateOutputJSON()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$generateOutputJSON(
-  save.output = TRUE,
-  upload.s3 = FALSE,
+  output.path = NULL,
   filename = self$getFilename(paste(self$election.name, "-ein", sep = ""), extension =
     "json")
 )}\if{html}{\out{</div>}}
@@ -139,7 +138,7 @@ EcologicalInferenceProcessor
 \subsection{Method \code{exportBetab()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$exportBetab(
-  output.folder = self$data.folder.s3,
+  output.folder = NULL,
   overwrite = FALSE
 )}\if{html}{\out{</div>}}
 }

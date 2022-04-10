@@ -1,14 +1,15 @@
 Package: ElectionsLATAM
 Type: Package
-Title: Statistics methods for applying in LATAM elections
+Title: Statistics Methods for Applying in LATAM elections
 Version: 0.1.1
 Language: en-US
 Authors@R: c(
     person("Alejandro", "Baranek",,"abaranek@dc.uba.ar", c("cre", "aut")),
-    person("Ernesto","Calvo",,"ecalvo@umd.edu", c("aut"))
+    person("Ernesto","Calvo",,"ecalvo@umd.edu", c("aut")),
+    person("Andy","Tow",,"", c("aut"))
     )
 Maintainer: Alejandro Baranek <abaranek@dc.uba.ar>
-Description: 
+Description: A package for reproducible research for statistical methods over LATAM elections
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

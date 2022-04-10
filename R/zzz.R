@@ -4,9 +4,9 @@
 #'
 #' @docType package
 #' @name ElectionsLATAM
-#' @import R6 lgr DBI
+#' @import R6 lgr
 #' @importFrom utils str
-#' @author Alejandro Baranek <abaranek@dc.uba.ar>, Leonardo Javier Belen <leobelen@gmail.com>
+#' @author Alejandro Baranek <abaranek@dc.uba.ar>
 
 #' Executes code while loading the package.
 #'

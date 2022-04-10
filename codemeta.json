@@ -1,28 +1,19 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "ElectionsLATAM",
-  "description": "Allows the user to generate and execute select, insert, update and delete 'SQL' queries the underlying database without having to explicitly write 'SQL' code. ",
-  "name": "ElectionsLATAM: Database Agnostic Package to Generate and Process 'SQL' Queries in R",
+  "description": "A package for reproducible research for statistical methods over LATAM elections",
+  "name": "ElectionsLATAM: Statistics Methods for Applying in LATAM elections",
   "codeRepository": "https://github.com/rOpenStats/ElectionsLATAM",
   "issueTracker": "https://github.com/rOpenStats/ElectionsLATAM/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.1.4",
+  "version": "0.1.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.2 (2020-06-22)",
-  "provider": {
-    "@id": "https://cran.r-project.org",
-    "@type": "Organization",
-    "name": "Comprehensive R Archive Network (CRAN)",
-    "url": "https://cran.r-project.org"
-  },
+  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
   "author": [
     {
       "@type": "Person",
@@ -32,13 +23,16 @@
     },
     {
       "@type": "Person",
-      "givenName": "Leonardo",
-      "familyName": "Belen",
-      "email": "leobelen@gmail.com"
+      "givenName": "Ernesto",
+      "familyName": "Calvo",
+      "email": "ecalvo@umd.edu"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Andy",
+      "familyName": "Tow"
     }
   ],
-  "contributor": {},
-  "copyrightHolder": {},
   "maintainer": [
     {
       "@type": "Person",
@@ -121,8 +115,8 @@
       "sameAs": "https://CRAN.R-project.org/package=pkgdown"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "lgr",
       "name": "lgr",
@@ -134,7 +128,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lgr"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "R6",
       "name": "R6",
@@ -146,31 +140,79 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=R6"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
-      "identifier": "DBI",
-      "name": "DBI",
+      "identifier": "dplyr",
+      "name": "dplyr",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=DBI"
+      "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    {
+    "4": {
       "@type": "SoftwareApplication",
-      "identifier": "ElectionsLATAMite",
-      "name": "ElectionsLATAMite",
+      "identifier": "magrittr",
+      "name": "magrittr",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=ElectionsLATAMite"
+      "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    {
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "foreign",
+      "name": "foreign",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=foreign"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "boot",
+      "name": "boot",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=boot"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "networkD3",
+      "name": "networkD3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=networkD3"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "webshot",
+      "name": "webshot",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=webshot"
+    },
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
@@ -181,21 +223,12 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=knitr"
-    }
-  ],
-  "contIntegration": ["https://travis-ci.org/rOpenStats/ElectionsLATAM", "https://codecov.io/gh/rOpenStats/ElectionsLATAM"],
-  "keywords": [
-    "polyhedra-database",
-    "geometry",
-    "rgl"
-  ],
-  "relatedLink": [
-    "https://CRAN.R-project.org/package=Rpolyhedra",
-    "https://CRAN.R-project.org/package=ElectionsLATAM"
-  ],
-  "funder": {},
-  "developmentStatus": "https://www.repostatus.org/#active",
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "656.714KB",
   "releaseNotes": "https://github.com/rOpenStats/ElectionsLATAM/blob/master/NEWS.md",
-  "readme": "https://github.com/rOpenStats/ElectionsLATAM/blob/master/README.md",
-  "fileSize": "0KB"
+  "readme": "https://github.com/rOpenStats/ElectionsLATAM/blob/main/README.md",
+  "contIntegration": ["https://travis-ci.org/rOpenStats/ElectionsLATAM", "https://codecov.io/gh/rOpenStats/ElectionsLATAM"],
+  "developmentStatus": "https://www.repostatus.org/#active"
 }

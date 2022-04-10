@@ -13,6 +13,7 @@ EcologicalInferenceStrategy
 \itemize{
 \item \href{#method-new}{\code{EcologicalInferenceStrategy$new()}}
 \item \href{#method-setProcessor}{\code{EcologicalInferenceStrategy$setProcessor()}}
+\item \href{#method-runEcologicalInference}{\code{EcologicalInferenceStrategy$runEcologicalInference()}}
 \item \href{#method-clone}{\code{EcologicalInferenceStrategy$clone()}}
 }
 }
@@ -31,6 +32,18 @@ EcologicalInferenceStrategy
 \subsection{Method \code{setProcessor()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategy$setProcessor(processor)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-runEcologicalInference"></a>}}
+\if{latex}{\out{\hypertarget{method-runEcologicalInference}{}}}
+\subsection{Method \code{runEcologicalInference()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategy$runEcologicalInference(
+  input.shares.fields,
+  output.shares.fields
+)}\if{html}{\out{</div>}}
 }
 
 }

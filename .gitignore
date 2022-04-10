@@ -1,0 +1,18 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+
+# OSX
+.DS_Store
+
+#
+R/dev/
+
+# Rcheck output
+..Rcheck
+doc
+Meta
+docs/

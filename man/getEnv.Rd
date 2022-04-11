@@ -14,8 +14,21 @@ getEnv(
   logger = lgr
 )
 }
+\arguments{
+\item{package.prefix}{= getPackagePrefix(),}
+
+\item{fail.on.empty}{= TRUE}
+
+\item{env.file}{= "~/.Renviron",}
+
+\item{call.counter}{= 0,}
+
+\item{refresh.env}{= FALSE,}
+
+\item{logger}{= lgr}
+}
 \description{
-getEnv
+Returns the value of a variable name in .Renviron or in project .env file
 }
 \examples{
 getEnv("variable", fail.on.empty = FALSE)

@@ -33,6 +33,7 @@
 #'costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE)
 #'
 #' @importFrom R6 R6Class
+#' @docType class
 #' @import dplyr
 #' @import magrittr
 #' @author ken4rab
@@ -50,6 +51,7 @@ public = list(
   output.election = NA,
   location.fields = NA,
   votes.field = NA,
+  absent.field = NA,
   potential.votes.field = NULL,
   ignore.fields = NULL,
   col.types = NA,
@@ -59,6 +61,7 @@ public = list(
   seed = NA,
   # filter
   locations.available = NULL,
+  potential.votes.check = NULL,
   # output
   output.table = NA,
   output = NA,
@@ -72,6 +75,7 @@ public = list(
                         scenario,
                         location.fields,
                         votes.field,
+                        absent.field = "ausente",
                         parties.mapping = NULL,
                         reverse.mapping = TRUE,
                         potential.votes.field = NULL,
@@ -85,6 +89,7 @@ public = list(
     self$scenario        <- scenario
     self$location.fields <- location.fields
     self$votes.field     <- votes.field
+    self$absent.field    <- absent.field
     self$potential.votes.field <- potential.votes.field
     self$ignore.fields   <- ignore.fields
     self$col.types       <- col.types
@@ -123,7 +128,7 @@ public = list(
     logger$info("Loading input election",
                 input.filepath = input.filepath
     )
-    self$input.election <- loadPivotInput(input.filepath = input.filepath, col_types = self$col.types)
+    self$input.election <- loadPivotTable(input.filepath = input.filepath, col_types = self$col.types)
     self$input.election
   },
   generateNormalizedOutput = function(indicator = "perc") {
@@ -299,16 +304,22 @@ public = list(
   getSharesFields = function(election.fields) {
     share.fields <- election.fields
     share.fields <- setdiff(share.fields, c(self$location.fields, self$votes.field, self$potential.votes.field))
-    not.candidate.fields <- c("blanco_y_nulo", "ausente", "ausente-1", "ausente-2")
+    not.candidate.fields <- c("blanco_y_nulo", self$absent.field,
+                              paste(self$absent.field, "1", sep = "-"),
+                              paste(self$absent.field, "2", sep = "-"))
     candidate.fields <- setdiff(share.fields, not.candidate.fields)
     not.candidate.fields <- sort(intersect(not.candidate.fields, share.fields), decreasing = TRUE)
     ret <- c(sort(candidate.fields), not.candidate.fields)
     ret
   },
-  fixLocationsAvailable = function() {
+  fixLocationsAvailable = function(max.potential.votes.rel.dif = Inf) {
     logger <- getLogger(self)
     if (is.null(self$locations.available)) {
-      self$locations.available <- self$input.election[, self$location.fields]
+      locations.available.input  <- self$input.election[, self$location.fields]
+      locations.available.output <- self$output.election[, self$location.fields]
+      locations.available <- locations.available.input %>% inner_join(locations.available.output,
+                                                                      by = self$location.fields)
+      self$locations.available <- locations.available
     }
     if (!is.null(self$locations.available)) {
       logger$info("Starting with",
@@ -339,6 +350,50 @@ public = list(
                   input.locations = nrow(self$input.election),
                   output.locations = nrow(self$output.election)
       )
+      # Check comparability between input-output
+      votes.comparation.field <- self$votes.field
+      if (!is.null(self$potential.votes.field)){
+        votes.comparation.field <- self$potential.votes.field
+      }
+      if (!is.infinite(max.potential.votes.rel.dif)){
+        potential.input <- self$input.election[, c(self$location.fields, votes.comparation.field)]
+        potential.votes.col <- length(names(potential.input))
+        #votes.comparation.field.input <- paste(names(potential.input)[potential.votes.col], "input", sep = "_")
+        votes.comparation.field.input <- "votes_input"
+        names(potential.input)[potential.votes.col] <- votes.comparation.field.input
+        potential.output <- self$output.election[, c(self$location.fields, votes.comparation.field)]
+        potential.votes.col <- length(names(potential.output))
+        #votes.comparation.field.output <- paste(names(potential.output)[potential.votes.col], "output", sep = "_")
+        votes.comparation.field.output <- "votes_output"
+        names(potential.output)[potential.votes.col] <- votes.comparation.field.output
+        potential.votes <- potential.input %>% inner_join(potential.output, by = self$location.fields)
+        potential.votes %<>% mutate(potential.votes.rel.diff = round((votes_input - votes_output) / votes_output, 4))
+        potential.votes %<>% arrange(desc(abs(potential.votes.rel.diff)))
+        self$potential.votes.check <- potential.votes
+        if (!is.infinite(max.potential.votes.rel.dif)){
+          non.comparable.locations <- self$potential.votes.check %>%
+            filter(abs(potential.votes.rel.diff) > max.potential.votes.rel.dif)
+          comparable.locations <- self$potential.votes.check %>%
+                                    filter(abs(potential.votes.rel.diff) <= max.potential.votes.rel.dif)
+          comparable.locations.filter <- comparable.locations[,self$location.fields]
+          self$input.election %<>% inner_join(comparable.locations.filter,
+                                              by = self$location.fields
+          )
+          self$output.election %<>% inner_join(comparable.locations.filter,
+                                               by = self$location.fields
+          )
+          logger$info("After filtering comparable locations",
+                      threshold = max.potential.votes.rel.dif,
+                      non.comparable.locations = nrow(non.comparable.locations),
+                      non.comparable.votes = max(sum(non.comparable.locations$votes_input),
+                                                  sum(non.comparable.locations$votes_output)),
+                      comparable.locations = nrow(comparable.locations),
+                      comparable.votes = max(sum(comparable.locations$votes_input),
+                                                 sum(comparable.locations$votes_output)),
+                      input.locations = nrow(self$input.election),
+                      output.locations = nrow(self$output.election))
+        }
+      }
     }
 
     input.diff.output <- setdiff(
@@ -363,8 +418,8 @@ public = list(
       for (empty.input.row in empty.input.rows) {
         location.id <- paste(self$input.election[empty.input.row, self$location.fields], collapse = "|")
         absents <- 0
-        if ("ausente" %in% names(self$input.election)) {
-          absents <- as.numeric(self$input.election[empty.input.row, "ausente"])
+        if (self$absent.field %in% names(self$input.election)) {
+          absents <- as.numeric(self$input.election[empty.input.row, self$absent.field])
         }
         logger$warn("Input location without votes",
                     location.id = location.id,
@@ -374,8 +429,8 @@ public = list(
       for (empty.output.row in empty.output.rows) {
         location.id <- paste(self$output.election[empty.output.row, self$location.fields], collapse = "|")
         absents <- 0
-        if ("ausente" %in% names(self$output.election)) {
-          absents <- as.numeric(self$output.election[empty.output.row, "ausente"])
+        if (self$absent.field %in% names(self$output.election)) {
+          absents <- as.numeric(self$output.election[empty.output.row, self$absent.field])
         }
         logger$warn("Output location without votes",
                     location.id = location.id,
@@ -392,8 +447,14 @@ public = list(
       )
     }
   },
-  runScenario = function(include.blancos = TRUE, include.ausentes = TRUE) {
+  checkDefinitions = function(){
+    stopifnot(self$votes.field %in% names(self$input.election))
+    stopifnot(self$votes.field %in% names(self$output.election))
+  },
+  runScenario = function(include.blancos = TRUE, include.ausentes = TRUE,
+                         max.potential.votes.rel.dif = Inf) {
     logger <- getLogger(self)
+    self$checkDefinitions()
     logger$info("Setting seed", seed = self$seed)
     set.seed(self$seed)
     if (is.null(self$input.election.original)) {
@@ -408,18 +469,19 @@ public = list(
     self$output.election[, self$ignore.fields] <- NULL
     self$input.election <- self$convertShares2Votes(election.df = self$input.election)
     self$output.election <- self$convertShares2Votes(election.df = self$output.election)
-    self$fixLocationsAvailable()
+    self$fixLocationsAvailable(max.potential.votes.rel.dif = max.potential.votes.rel.dif)
     if (include.ausentes) {
       input.ausente.col <- input.votes.col
       input.votes.col <- ncol(self$input.election) + 1
       self$input.election[, input.votes.col] <- self$input.election[, input.ausente.col]
       self$input.election[, input.ausente.col] <- 0
-      names(self$input.election)[c(input.ausente.col, input.votes.col)] <- c("ausente", "votos")
+
+      names(self$input.election)[c(input.ausente.col, input.votes.col)] <- c(self$absent.field, self$votes.field)
       output.ausente.col <- output.votes.col
       output.votes.col <- ncol(self$output.election) + 1
       self$output.election[, output.votes.col] <- self$output.election[, output.ausente.col]
       self$output.election[, output.ausente.col] <- 0
-      names(self$output.election)[c(output.ausente.col, output.votes.col)] <- c("ausente", "votos")
+      names(self$output.election)[c(output.ausente.col, output.votes.col)] <- c(self$absent.field, self$votes.field)
       total.votes.df <- cbind(self$input.election[, input.votes.col], self$output.election[, output.votes.col])
       names(total.votes.df) <- c("input.votes", "output.votes")
       total.votes.df[, "max.votes"] <- apply(total.votes.df, MARGIN = 1, FUN = max)
@@ -476,15 +538,18 @@ public = list(
 )
 )
 
-#' loadPivotInput
+#' loadPivotTable
+#' @description
+#' @param input.filepath filepath for loading table
+#' @param col_types      readr col_types spec
 #' @examples
 #' costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
-#' loadPivotInput(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
+#' loadPivotTable(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
 #' @author ken4rab
 #' @import readr
 #' @import readxl
 #' @export
-loadPivotInput <- function(input.filepath, col_types = cols(.default = col_number())) {
+loadPivotTable <- function(input.filepath, col_types = cols(.default = col_number())) {
   input.election <- NULL
   if (grepl("\\.csv", input.filepath)) {
     input.election <-
@@ -509,6 +574,8 @@ loadPivotInput <- function(input.filepath, col_types = cols(.default = col_numbe
 #' ein <- EcologicalInferenceStrategy$new()
 #' # Cannot execute an abstract class
 #' # ein$runEcologicalInference(NULL, NULL)
+#' @importFrom R6 R6Class
+#' @docType class
 #' @author ken4rab
 #' @export
 EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
@@ -537,6 +604,8 @@ runEcologicalInference = function(input.shares.fields,
 #' ein <- EcologicalInferenceStrategyCalvoEtAl$new()
 #' # Cannot run without having a processor
 #' #ein$runEcologicalInference(NULL, NULL)
+#' @importFrom R6 R6Class
+#' @docType class
 #' @import foreign
 #' @import boot
 #' @import networkD3
@@ -546,9 +615,9 @@ runEcologicalInference = function(input.shares.fields,
 EcologicalInferenceStrategyCalvoEtAl <- R6Class("EcologicalInferenceStrategyCalvoEtAl",
 inherit = EcologicalInferenceStrategy,
  public = list(
-   #' @field estsPG
+   #' @field estsPG estimation parameters
    estsPG = NA,
-   #' @field fracsPG
+   #' @field fracsPG fractions
    fracsPG = NA,
    initialize = function(seed = 143324) {
      super$initialize(seed = seed)
@@ -677,8 +746,8 @@ inherit = EcologicalInferenceStrategy,
    #' @description
    #' runEcologicalInference
    #' run ecological inference with current strategy
-   #' @param input.shares.fields
-   #' @param output.shares.fields
+   #' @param input.shares.fields shares fields in input table
+   #' @param output.shares.fields shares fields in output table
    runEcologicalInference = function(input.shares.fields,
                                      output.shares.fields){
      logger <- getLogger(self)

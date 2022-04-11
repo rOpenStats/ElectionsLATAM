@@ -6,8 +6,12 @@
 \usage{
 genLogger(r6.object)
 }
+\arguments{
+\item{r6.object}{an r6.object}
+}
 \description{
-genLogger
+Returns a configured logger with threshold according r6 object.
+This function is usually called in class constructors
 }
 \examples{
 eis <- EcologicalInferenceStrategy$new()

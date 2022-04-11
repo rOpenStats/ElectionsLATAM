@@ -1,4 +1,11 @@
 #' mutate_cond
+#' @description
+#' Execute dplyr mutate only for rows satisfying condition
+#' @param .data A data frame, data frame extension (e.g. a tibble), or a lazy data frame (e.g. from dbplyr or dtplyr)
+#' @param condition condition for
+#' @param ... <data-masking> Name-value pairs. The name gives the name of the column in the output.
+#' @param envir environment default( parent.frame())
+#'
 #' @examples
 #' library(dplyr)
 #' df <- data.frame(a = c("X", "Y"), b = 0)
@@ -23,6 +30,10 @@ getHost <- function() {
 
 
 #' genLogger
+#' @description
+#' Returns a configured logger with threshold according r6 object.
+#' This function is usually called in class constructors
+#' @param r6.object an r6.object
 #' @examples
 #' eis <- EcologicalInferenceStrategy$new()
 #' eis$logger <- genLogger(eis)
@@ -34,6 +45,11 @@ genLogger <- function(r6.object) {
 }
 
 #' getLogger
+#' @description
+#' Returns the configured lgr of an r6 object.
+#' If the object don't have a lgr or is not initialized returns an error
+#' @param r6.object an r6.object
+#'
 #' @examples
 #' eis <- EcologicalInferenceStrategy$new()
 #' getLogger(eis)
@@ -57,7 +73,7 @@ getLogger <- function(r6.object) {
 #' loggerSetupFile
 #' @description
 #' Setup logger filename with a LayoutFormat
-#' @param log.file
+#' @param log.filepath file path for setting a lgr::AppenderFile
 #' @examples
 #' log.filepath <- file.path(tempdir(), "lgr.log")
 #' dir.create(tempdir(), recursive = TRUE, showWarnings = FALSE)
@@ -66,9 +82,9 @@ getLogger <- function(r6.object) {
 #' @import lgr
 #' @author ken4rab
 #' @export
-loggerSetupFile <- function(log.file) {
+loggerSetupFile <- function(log.filepath) {
   lgr::basic_config()
-  lgr::get_logger("root")$add_appender(AppenderFile$new(log.file,
+  lgr::get_logger("root")$add_appender(AppenderFile$new(log.filepath,
                                                         layout = LayoutFormat$new(
                                                           fmt = "%L [%t] %m %j",
                                                           timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
@@ -87,6 +103,15 @@ getPackagePrefix <- function() {
 }
 
 #' getEnv
+#' @description
+#' Returns the value of a variable name in .Renviron or in project .env file
+#' @param variable.name the variable to be retrieved
+#' @param package.prefix package prefix when retrieving from .Renviron (default getPackagePrefix())
+#' @param fail.on.empty if an error should be returned when variable not found (default TRUE)
+#' @param env.file  environment file (default "~/.Renviron")
+#' @param call.counter Internal use (default 0)
+#' @param refresh.env refresh environment before retrieving (default FALSE)
+#' @param logger for inheriting logger threshold from caller (default lgr)
 #' @examples
 #' getEnv("variable", fail.on.empty = FALSE)
 #' @export

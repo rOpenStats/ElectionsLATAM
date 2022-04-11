@@ -6,8 +6,12 @@
 \usage{
 getLogger(r6.object)
 }
+\arguments{
+\item{r6.object}{an r6.object}
+}
 \description{
-getLogger
+Returns the configured lgr of an r6 object.
+If the object don't have a lgr or is not initialized returns an error
 }
 \examples{
 eis <- EcologicalInferenceStrategy$new()

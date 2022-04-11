@@ -6,8 +6,11 @@
 \usage{
 mutate_cond(.data, condition, ..., envir = parent.frame())
 }
+\arguments{
+\item{envir}{= parent.frame()}
+}
 \description{
-mutate_cond
+Execute dplyr mutate only for rows satisfying condition
 }
 \examples{
 library(dplyr)

@@ -480,6 +480,8 @@ public = list(
 #' @examples
 #' loadPivotInput(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
 #' @author ken4rab
+#' @import readr
+#' @import readxl
 #' @export
 loadPivotInput <- function(input.filepath, col_types = cols(.default = col_number())) {
   input.election <- NULL
@@ -504,7 +506,8 @@ loadPivotInput <- function(input.filepath, col_types = cols(.default = col_numbe
 #' EcologicalInferenceStrategy
 #' @examples
 #' ein <- EcologicalInferenceStrategy$new()
-#' ein$runEcologicalInference(NULL, NULL)
+#' # Cannot execute an abstract class
+#' # ein$runEcologicalInference(NULL, NULL)
 #' @author ken4rab
 #' @export
 EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
@@ -531,7 +534,8 @@ runEcologicalInference = function(input.shares.fields,
 #' EcologicalInferenceStrategyCalvoEtAl
 #' @examples
 #' ein <- EcologicalInferenceStrategyCalvoEtAl$new()
-#' ein$runEcologicalInference(NULL, NULL)
+#' # Cannot run without having a processor
+#' #ein$runEcologicalInference(NULL, NULL)
 #' @import foreign
 #' @import boot
 #' @import networkD3

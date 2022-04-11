@@ -49,8 +49,6 @@ costa.rica.ein$output.election <- readr::read_delim(
 costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE)
 
 
-Executes code while loading the package.
-
 }
 \author{
 Alejandro Baranek <abaranek@dc.uba.ar>

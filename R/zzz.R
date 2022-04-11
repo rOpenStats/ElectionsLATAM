@@ -41,8 +41,6 @@
 #'costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE)
 #'
 #'
-#' Executes code while loading the package.
-#'
 #' @param libname Library name
 #' @param pkgname Package name
 # execute onload

@@ -10,7 +10,10 @@ mutate_cond(.data, condition, ..., envir = parent.frame())
 mutate_cond
 }
 \examples{
-
+library(dplyr)
+df <- data.frame(a = c("X", "Y"), b = 0)
+df <- df \%>\% mutate_cond(a == "X", b = 1)
+df
 }
 \author{
 ken4rab

@@ -1,6 +1,9 @@
 #' mutate_cond
 #' @examples
-#'
+#' library(dplyr)
+#' df <- data.frame(a = c("X", "Y"), b = 0)
+#' df <- df %>% mutate_cond(a == "X", b = 1)
+#' df
 #' @author ken4rab
 #' @export
 mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
@@ -77,9 +80,8 @@ loggerSetupFile <- function(log.file) {
 
 
 #' getPackagePrefix
-#' @examples
-#' getPackagePrefix()
 #' @author ken4rab
+#' @noRd
 getPackagePrefix <- function() {
   "ElectionsLATAM"
 }

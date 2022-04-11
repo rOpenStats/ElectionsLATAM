@@ -20,6 +20,8 @@ Collate:
     'zzz.R'
 Imports: lgr,
     R6,
+    readr,
+    readxl,
     dplyr,
     magrittr,
     foreign,
@@ -28,7 +30,6 @@ Imports: lgr,
     webshot,
     knitr
 Suggests: rmarkdown, 
-    dplyr,
     testthat,
     covr,
     lintr,

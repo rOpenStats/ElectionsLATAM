@@ -10,7 +10,8 @@ EcologicalInferenceStrategyCalvoEtAl
 }
 \examples{
 ein <- EcologicalInferenceStrategyCalvoEtAl$new()
-ein$runEcologicalInference(NULL, NULL)
+# Cannot run without having a processor
+#ein$runEcologicalInference(NULL, NULL)
 }
 \author{
 ecalvo

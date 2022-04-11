@@ -123,7 +123,9 @@ getEnv <- function(variable.name, package.prefix = getPackagePrefix(), fail.on.e
     readRenviron(env.file)
     # this does not work
     # dotenv::load_dot_env()
-    readRenviron(".env")
+    if (file.exists(".env")){
+      readRenviron(".env")
+    }
   }
   prefixed.variable.name <- paste(package.prefix, variable.name, sep = "")
   # First look for parameter without prefix, expected in .env

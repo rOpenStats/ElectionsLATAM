@@ -8,6 +8,10 @@ EcologicalInferenceStrategy
 
 EcologicalInferenceStrategy
 }
+\examples{
+ein <- EcologicalInferenceStrategy$new()
+ein$runEcologicalInference(NULL, NULL)
+}
 \author{
 ken4rab
 }

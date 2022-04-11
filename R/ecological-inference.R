@@ -1,8 +1,9 @@
 #' EcologicalInferenceProcessor
 #' @examples
 #' library(ElectionsLATAM)
+#' library(readr)
 #' costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
-#' ecological.inference.calvo <- EcologicalInferenceStrategyCalvo$new()
+#' ecological.inference.calvo <- EcologicalInferenceStrategyCalvoEtAl$new()
 #'costa.rica.ein <-
 #'  EcologicalInferenceProcessor$new(
 #'    ecological.inference.strategy = ecological.inference.calvo,
@@ -501,10 +502,9 @@ loadPivotInput <- function(input.filepath, col_types = cols(.default = col_numbe
 }
 
 #' EcologicalInferenceStrategy
-#' @import foreign
-#' @import boot
-#' @import networkD3
-#' @import webshot
+#' @examples
+#' ein <- EcologicalInferenceStrategy$new()
+#' ein$runEcologicalInference(NULL, NULL)
 #' @author ken4rab
 #' @export
 EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
@@ -512,7 +512,7 @@ public = list(
   #' @field seed for initializing random generator
   seed   = NA,
   #' @field processor eir processor
-  processor = NA,
+  processor = NULL,
   #' @field logger lgr configured for class
   logger = NA,
 initialize = function(seed = 143324) {
@@ -528,14 +528,17 @@ runEcologicalInference = function(input.shares.fields,
 }
 ))
 
-#' EcologicalInferenceStrategyCalvo
+#' EcologicalInferenceStrategyCalvoEtAl
+#' @examples
+#' ein <- EcologicalInferenceStrategyCalvoEtAl$new()
+#' ein$runEcologicalInference(NULL, NULL)
 #' @import foreign
 #' @import boot
 #' @import networkD3
 #' @import webshot
 #' @author ecalvo
 #' @export
-EcologicalInferenceStrategyCalvo <- R6Class("EcologicalInferenceStrategyCalvo",
+EcologicalInferenceStrategyCalvoEtAl <- R6Class("EcologicalInferenceStrategyCalvoEtAl",
 inherit = EcologicalInferenceStrategy,
  public = list(
    #' @field estsPG
@@ -675,7 +678,7 @@ inherit = EcologicalInferenceStrategy,
                                      output.shares.fields){
      logger <- getLogger(self)
      processor <- self$processor
-
+     stopifnot(!is.null(processor))
 
      dsINpre.zones <- self$input.election[, self$location.fields]
      # input

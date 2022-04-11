@@ -52,12 +52,16 @@ getLogger <- function(r6.object) {
 
 
 #' loggerSetupFile
+#' @description
+#' Setup logger filename with a LayoutFormat
 #' @param log.file
 #' @examples
-#' log.filepath <- file.path(tempfile(), "lgr.log)
+#' log.filepath <- file.path(tempfile(), "lgr.log")
 #' dir.create(tempfile(), recursive = TRUE, showWarnings = FALSE)
 #' loggerSetupFile(log.filepath)
+#'
 #' @import lgr
+#' @author ken4rab
 #' @export
 loggerSetupFile <- function(log.file) {
   lgr::basic_config()

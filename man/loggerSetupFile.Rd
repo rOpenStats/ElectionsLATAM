@@ -7,5 +7,14 @@
 loggerSetupFile(log.file)
 }
 \description{
-loggerSetupFile
+Setup logger filename with a LayoutFormat
+}
+\examples{
+log.filepath <- file.path(tempfile(), "lgr.log")
+dir.create(tempfile(), recursive = TRUE, showWarnings = FALSE)
+loggerSetupFile(log.filepath)
+
+}
+\author{
+ken4rab
 }

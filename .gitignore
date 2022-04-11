@@ -16,3 +16,6 @@ R/dev/
 doc
 Meta
 docs/
+inst/doc
+/doc/
+/Meta/

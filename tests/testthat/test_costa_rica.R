@@ -2,7 +2,7 @@
 
 test_that("Costa Rica ecological Inference", {
   costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
-  ecological.inference.calvo <- EcologicalInferenceStrategyCalvo$new()
+  ecological.inference.calvo <- EcologicalInferenceStrategyCalvoEtAl$new()
   costa.rica.ein <-
     EcologicalInferenceProcessor$new(
       ecological.inference.strategy = ecological.inference.calvo,

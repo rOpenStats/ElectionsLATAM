@@ -537,6 +537,7 @@ public = list(
     )
   },
   expectCompatible = function(output.table.expected, tolerance.rel = 0.1){
+    logger <- getLogger(self)
     testthat::expect_identical(colnames(self$output.table), colnames(output.table.expected))
     testthat::expect_identical(rownames(self$output.table), rownames(output.table.expected))
     for (i in seq_len(nrow(self$output.table))){
@@ -547,7 +548,17 @@ public = list(
         else{
           diff.rel <- self$output.table[i, j] - output.table.expected[i, j]
         }
-        testthat::expect_true(abs(diff.rel) < tolerance.rel)
+        test.passes <- abs(diff.rel) < tolerance.rel
+        if (!test.passes){
+          logger$warn("Difference in Output Matrix",
+                      i = i, j = j,
+                      row = rownames(self$output.table)[i],
+                      col = colnames(self$output.table)[j],
+                      observed = self$output.table[i, j],
+                      expected = output.table.expected[i, j],
+                      diff.rel = diff.rel)
+        }
+        testthat::expect_true(test.passes)
       }
     }
     self$output.table

@@ -10,8 +10,8 @@ loggerSetupFile(log.file)
 Setup logger filename with a LayoutFormat
 }
 \examples{
-log.filepath <- file.path(tempfile(), "lgr.log")
-dir.create(tempfile(), recursive = TRUE, showWarnings = FALSE)
+log.filepath <- file.path(tempdir(), "lgr.log")
+dir.create(tempdir(), recursive = TRUE, showWarnings = FALSE)
 loggerSetupFile(log.filepath)
 
 }

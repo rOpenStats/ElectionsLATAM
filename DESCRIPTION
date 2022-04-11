@@ -9,7 +9,7 @@ Authors@R: c(
     person("Andy","Tow",,"andy@towsa.com", c("aut"))
     )
 Maintainer: Alejandro Baranek <abaranek@dc.uba.ar>
-Description: A package for reproducible research for statistical methods over LATAM elections
+Description: A package for applying  statistical methods reproducible research over LATAM elections.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

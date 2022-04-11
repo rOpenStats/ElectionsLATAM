@@ -478,6 +478,7 @@ public = list(
 
 #' loadPivotInput
 #' @examples
+#' costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
 #' loadPivotInput(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
 #' @author ken4rab
 #' @import readr

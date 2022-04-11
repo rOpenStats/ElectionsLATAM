@@ -7,7 +7,13 @@
 mutate_cond(.data, condition, ..., envir = parent.frame())
 }
 \arguments{
-\item{envir}{= parent.frame()}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a lazy data frame (e.g. from dbplyr or dtplyr)}
+
+\item{condition}{condition for}
+
+\item{...}{<data-masking> Name-value pairs. The name gives the name of the column in the output.}
+
+\item{envir}{environment default( parent.frame())}
 }
 \description{
 Execute dplyr mutate only for rows satisfying condition

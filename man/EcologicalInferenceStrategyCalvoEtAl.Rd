@@ -20,6 +20,15 @@ ecalvo
 \section{Super class}{
 \code{\link[ElectionsLATAM:EcologicalInferenceStrategy]{ElectionsLATAM::EcologicalInferenceStrategy}} -> \code{EcologicalInferenceStrategyCalvoEtAl}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{estsPG}}{estimation parameters}
+
+\item{\code{fracsPG}}{fractions}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -186,6 +195,15 @@ run ecological inference with current strategy
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{input.shares.fields}}{shares fields in input table}
+
+\item{\code{output.shares.fields}}{shares fields in output table}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

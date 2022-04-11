@@ -15,17 +15,19 @@ getEnv(
 )
 }
 \arguments{
-\item{package.prefix}{= getPackagePrefix(),}
+\item{variable.name}{the variable to be retrieved}
 
-\item{fail.on.empty}{= TRUE}
+\item{package.prefix}{package prefix when retrieving from .Renviron (default getPackagePrefix())}
 
-\item{env.file}{= "~/.Renviron",}
+\item{fail.on.empty}{if an error should be returned when variable not found (default TRUE)}
 
-\item{call.counter}{= 0,}
+\item{env.file}{environment file (default "~/.Renviron")}
 
-\item{refresh.env}{= FALSE,}
+\item{call.counter}{Internal use (default 0)}
 
-\item{logger}{= lgr}
+\item{refresh.env}{refresh environment before retrieving (default FALSE)}
+
+\item{logger}{for inheriting logger threshold from caller (default lgr)}
 }
 \description{
 Returns the value of a variable name in .Renviron or in project .env file

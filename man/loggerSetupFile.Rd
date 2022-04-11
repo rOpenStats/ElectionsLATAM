@@ -4,7 +4,10 @@
 \alias{loggerSetupFile}
 \title{loggerSetupFile}
 \usage{
-loggerSetupFile(log.file)
+loggerSetupFile(log.filepath)
+}
+\arguments{
+\item{log.filepath}{file path for setting a lgr::AppenderFile}
 }
 \description{
 Setup logger filename with a LayoutFormat

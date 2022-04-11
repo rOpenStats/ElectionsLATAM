@@ -6,6 +6,11 @@
 \usage{
 loadPivotTable(input.filepath, col_types = cols(.default = col_number()))
 }
+\arguments{
+\item{input.filepath}{filepath for loading table}
+
+\item{col_types}{readr col_types spec}
+}
 \description{
 loadPivotTable
 }

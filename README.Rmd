@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 | Release | Usage | Development |
 |:--------|:------|:------------|
-|| [![minimal R version](https://img.shields.io/badge/R%3E%3D-4.0.0-blue.svg)](https://cran.r-project.org/) | [![Travis](https://travis-ci.org/rOpenStats/ElectionsLATAM.svg?branch=master)](https://travis-ci.org/rOpenStats/ElectionsLATAM) |
+|| [![minimal R version](https://img.shields.io/badge/R%3E%3D-4.0.0-blue.svg)](https://cran.r-project.org/) | [![R-CMD-check](https://github.com/rOpenStats/ElectionsLATAM/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenStats/ElectionsLATAM/actions)|
 | [![CRAN](http://www.r-pkg.org/badges/version/ElectionsLATAM)](https://cran.r-project.org/package=ElectionsLATAM) | | [![codecov](https://codecov.io/gh/rOpenStats/ElectionsLATAM/branch/master/graph/badge.svg)](https://codecov.io/gh/rOpenStats/ElectionsLATAM) |
 |||[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)|
 

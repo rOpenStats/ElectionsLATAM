@@ -37,6 +37,8 @@
 #' @import dplyr
 #' @import magrittr
 #' @importFrom testthat expect_true
+#' @importFrom readr write_delim
+#' @importFrom readr write_file
 #' @author ken4rab
 #' @export
 EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",

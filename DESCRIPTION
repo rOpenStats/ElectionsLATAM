@@ -28,9 +28,9 @@ Imports: lgr,
     boot,
     networkD3,
     webshot,
-    knitr
+    knitr,
+    testthat
 Suggests: rmarkdown, 
-    testthat,
     covr,
     lintr,
     pkgdown

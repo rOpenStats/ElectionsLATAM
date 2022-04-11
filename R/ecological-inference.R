@@ -36,6 +36,7 @@
 #' @docType class
 #' @import dplyr
 #' @import magrittr
+#' @import testthat
 #' @author ken4rab
 #' @export
 EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
@@ -534,6 +535,22 @@ public = list(
                 results = paste(names(results), results, sep = "= ", collapse = "|"),
                 total.votes = total.votes
     )
+  },
+  expectCompatible = function(output.table.expected, tolerance.rel = 0.1){
+    testthat::expect_identical(colnames(self$output.table), colnames(output.table.expected))
+    testthat::expect_identical(rownames(self$output.table), rownames(output.table.expected))
+    for (i in seq_len(nrow(self$output.table))){
+      for (j in seq_len(ncol(self$output.table))){
+        if (output.table.expected[i, j] > 0){
+          diff.rel <- (self$output.table[i, j] - output.table.expected[i, j])/ output.table.expected[i, j]
+        }
+        else{
+          diff.rel <- self$output.table[i, j] - output.table.expected[i, j]
+        }
+        testthat::expect_true(abs(diff.rel) < tolerance.rel)
+      }
+    }
+    self$output.table
   }
 )
 )

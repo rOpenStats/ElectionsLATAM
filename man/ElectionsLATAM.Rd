@@ -17,6 +17,6 @@
 A package to work with SQL datasources in a simple manner
 }
 \author{
-Alejandro Baranek <abaranek@dc.uba.ar>, Leonardo Javier Belen <leobelen@gmail.com>
+Alejandro Baranek <abaranek@dc.uba.ar>
 Executes code while loading the package.
 }

@@ -1,4 +1,7 @@
 #' mutate_cond
+#' @examples
+#'
+#' @author ken4rab
 #' @export
 mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
   condition <- eval(substitute(condition), .data, envir)
@@ -7,6 +10,8 @@ mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
 }
 
 #' getHost
+#' @examples
+#' getHost()
 #' @author ken4rab
 #' @export
 getHost <- function() {
@@ -15,12 +20,21 @@ getHost <- function() {
 
 
 #' genLogger
+#' @examples
+#' eis <- EcologicalInferenceStrategy$new()
+#' eis$logger <- genLogger(eis)
+#'
+#' @author ken4rab
 #' @export
 genLogger <- function(r6.object) {
   lgr::get_logger(class(r6.object)[[1]])
 }
 
 #' getLogger
+#' @examples
+#' eis <- EcologicalInferenceStrategy$new()
+#' getLogger(eis)
+#' @author ken4rab
 #' @export
 getLogger <- function(r6.object) {
   ret <- r6.object$logger
@@ -39,6 +53,10 @@ getLogger <- function(r6.object) {
 
 #' loggerSetupFile
 #' @param log.file
+#' @examples
+#' log.filepath <- file.path(tempfile(), "lgr.log)
+#' dir.create(tempfile(), recursive = TRUE, showWarnings = FALSE)
+#' loggerSetupFile(log.filepath)
 #' @import lgr
 #' @export
 loggerSetupFile <- function(log.file) {
@@ -55,12 +73,16 @@ loggerSetupFile <- function(log.file) {
 
 
 #' getPackagePrefix
+#' @examples
+#' getPackagePrefix()
 #' @author ken4rab
 getPackagePrefix <- function() {
   "ElectionsLATAM"
 }
 
 #' getEnv
+#' @examples
+#' getEnv("variable", fail.on.empty = FALSE)
 #' @export
 #' @author ken4rab
 getEnv <- function(variable.name, package.prefix = getPackagePrefix(), fail.on.empty = TRUE,
@@ -108,6 +130,8 @@ getEnv <- function(variable.name, package.prefix = getPackagePrefix(), fail.on.e
 
 
 #' getPackageDir
+#' @examples
+#' getPackageDir()
 #' @author ken4rab
 #' @export
 getPackageDir <- function() {

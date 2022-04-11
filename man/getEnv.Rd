@@ -17,6 +17,9 @@ getEnv(
 \description{
 getEnv
 }
+\examples{
+getEnv("variable", fail.on.empty = FALSE)
+}
 \author{
 ken4rab
 }

@@ -8,7 +8,7 @@ test_that("Costa Rica ecological Inference", {
       ecological.inference.strategy = ecological.inference.calvo,
       election.name = "2022-costa-rica-general-ballotage-n4",
       scenario = "final",
-      data.input.path = "~/.R/GOelecciones/data/ein/costa-rica",
+      data.input.path = costa.rica.ein.path,
       input.file = "2021-generales_pivot_candidatos_n4.csv",
       location.fields = c("id_unidad"),
       votes.field = "votos",

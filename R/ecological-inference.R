@@ -1,7 +1,40 @@
 #' EcologicalInferenceProcessor
+#' @examples
+#' library(ElectionsLATAM)
+#' costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
+#' ecological.inference.calvo <- EcologicalInferenceStrategyCalvo$new()
+#'costa.rica.ein <-
+#'  EcologicalInferenceProcessor$new(
+#'    ecological.inference.strategy = ecological.inference.calvo,
+#'    election.name = "2022-costa-rica-general-ballotage-n4",
+#'    scenario = "final",
+#'    data.input.path = costa.rica.ein.path,
+#'    input.file = "2021-generales_pivot_candidatos_n4.csv",
+#'    location.fields = c("id_unidad"),
+#'    votes.field = "votos",
+    #potential.votes.field = "habilitados",
+#'    ignore.fields = "habilitados",
+#'    col.types = cols(
+#'      .default = col_number(),
+#'      id_unidad = col_character()
+#'    )
+#'  )
+#' dummy <- costa.rica.ein$loadInputPivotCandidatos()
+#'costa.rica.ein$output.election <- readr::read_delim(
+#'  file.path(costa.rica.ein.path,
+#'            paste("2022-ballotage_pivot_candidatos_n4.csv", sep = "_")),
+#'  delim = ";",
+#'  col_types = cols(
+#'    .default = col_double(),
+#'    id_unidad = col_character()
+#'  )
+#' )
+#'costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE)
+#'
 #' @importFrom R6 R6Class
 #' @import dplyr
 #' @import magrittr
+#' @author ken4rab
 #' @export
 EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
 public = list(
@@ -161,9 +194,6 @@ public = list(
       )
       # you convert it as png
       file.exists(tmp.html.filepath)
-      # debug
-      tmp.html.filepath <<- tmp.html.filepath
-      sankey.network <<- sankey.network
 
       sankey.d3.html.filepath <- gsub("\\.png", ".html", sankey.d3.png.filepath)
       file.copy(tmp.html.filepath, sankey.d3.html.filepath)
@@ -235,15 +265,12 @@ public = list(
       logger$info("Ecological inference Betab file writen",
                   betab.filepath = betab.filepath
       )
-      # betab.filepath <<- betab.filepath
       if (!file.exists(betab.filepath) | overwrite) {
         write_delim(betab, file = betab.filepath, delim = ";")
       }
     }
   },
   convertShares2Votes = function(election.df) {
-    # debug
-    election.df <<- election.df
     share.fields <- self$getSharesFields(names(election.df))
     rows.sums <- apply(election.df[, share.fields], MARGIN = 1, FUN = sum)
     rows.sums.min <- min(rows.sums, na.rm = TRUE)
@@ -448,8 +475,10 @@ public = list(
 )
 )
 
-
 #' loadPivotInput
+#' @examples
+#' loadPivotInput(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
+#' @author ken4rab
 #' @export
 loadPivotInput <- function(input.filepath, col_types = cols(.default = col_number())) {
   input.election <- NULL
@@ -476,12 +505,16 @@ loadPivotInput <- function(input.filepath, col_types = cols(.default = col_numbe
 #' @import boot
 #' @import networkD3
 #' @import webshot
+#' @author ken4rab
 #' @export
 EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
 public = list(
-seed   = NA,
-processor = NA,
-logger = NA,
+  #' @field seed for initializing random generator
+  seed   = NA,
+  #' @field processor eir processor
+  processor = NA,
+  #' @field logger lgr configured for class
+  logger = NA,
 initialize = function(seed = 143324) {
   self$logger <- genLogger(self)
 },
@@ -500,36 +533,29 @@ runEcologicalInference = function(input.shares.fields,
 #' @import boot
 #' @import networkD3
 #' @import webshot
+#' @author ecalvo
 #' @export
 EcologicalInferenceStrategyCalvo <- R6Class("EcologicalInferenceStrategyCalvo",
 inherit = EcologicalInferenceStrategy,
  public = list(
+   #' @field estsPG
    estsPG = NA,
+   #' @field fracsPG
    fracsPG = NA,
    initialize = function(seed = 143324) {
      super$initialize(seed = seed)
    },
-   # CALL.DIFP
-   # Calculates penalty for given parameters
-   # p     - parameter vector R x (C-1)
-   # mx    - Column marginals
-   # my    - row marginals
-   # nR    - number of rows
-   # nC    - number of columns
-   # nP    - number of precincts
-   # const - weight for penalty
+   #' @description
+   #' CALL.DIFP
+   #' Calculates penalty for given parameters
+   #' @param p     - parameter vector R x (C-1)
+   #' @param mx    - Column marginals
+   #' @param my    - row marginals
+   #' @param nR    - number of rows
+   #' @param nC    - number of columns
+   #' @param nP    - number of precincts
+   #' @param const - weight for penalty
    callDifp = function(p, mx, my, covar, nR, nC, nP, const) {
-     # debug1
-     # p <<- p
-     # mx <<- mx
-     # my.debug <<- my
-     # covar <<- covar
-     # nR <<- nR
-     # nC <<- nC
-     # nP <<- nP
-     # const <<- const
-     # mx[which(is.na(mx[,1])),]
-
      pen <- 0
      d <- seq(from = 0, to = 0, length = nR * (nC - 1))
      g <- p[1:(nR * (nC - 1))]
@@ -564,16 +590,17 @@ inherit = EcologicalInferenceStrategy,
      }
      return(diff)
    },
-   # Ecological Inference in the RxC case
-   # Penalized Least Square Minimizer
-   # PARAMS.ESTIM
-   # Estimates parameters minimizing the penalized least squares criterion
-   # x       - index (optional, for bootstrapping)
-   # data    - marginals (optionally with covariates)
-   # nR      - number of rows
-   # nC      - number of columns
-   # const   - weight for penalty
-   # parSeed - Seed for parameters (optional)
+   #' @description
+   #' Ecological Inference in the RxC case
+   #' Penalized Least Square Minimizer
+   #' PARAMS.ESTIM
+   #' Estimates parameters minimizing the penalized least squares criterion
+   #' @param data    - marginals (optionally with covariates)
+   #' @param x       - index (optional, for bootstrapping)
+   #' @param nR      - number of rows
+   #' @param nC      - number of columns
+   #' @param const   - weight for penalty
+   #' @param parSeed - Seed for parameters (optional)
    paramsEstim = function(data, x = -1, nR, nC, const = 0.001, parSeed = -1) {
      if (x[1] == -1) x <- 1:nrow(data)
 
@@ -595,13 +622,14 @@ inherit = EcologicalInferenceStrategy,
      # , method="L-BFGS-B", method="SANN"
      return(fit$par)
    },
-   # Calculate Fractions
-   # CALC.FRACTIONS
-   # Calculate fractions from the parameters
-   # p     - parameters
-   # nR    - number of rows
-   # nC    - number of columns
-   # covar - (Optional) Vector of covariates
+   #' @description
+   #' Calculate Fractions
+   #' CALC.FRACTIONS
+   #' Calculate fractions from the parameters
+   #' @param p     - parameters
+   #' @param nR    - number of rows
+   #' @param nC    - number of columns
+   #' @param covar - (Optional) Vector of covariates
    calcFractions = function(p, nR, nC, covar = F) {
      d <- seq(from = 0, to = 0, length = nR * (nC - 1))
      g <- p[1:(nR * (nC - 1))]
@@ -627,16 +655,22 @@ inherit = EcologicalInferenceStrategy,
      }
      return(ests)
    },
-   # Bootstrapping
-   # PARAMS.BOOT
-   # data        - marginals (optionally, with covariates)
-   # nR          - number of rows
-   # nC          - number of columns
-   # bootSamples - number of bootstrap samples
+   #' @description
+   #' Bootstrapping
+   #' PARAMS.BOOT
+   #' @param data        - marginals (optionally, with covariates)
+   #' @param nR          - number of rows
+   #' @param nC          - number of columns
+   #' @param bootSamples - number of bootstrap samples
    paramsBoot = function(data, nR, nC, bootSamples) {
      output <- boot(data = data, statistic = self$paramsEstim, R = bootSamples, nR = nR, nC = nC)
      return(output)
    },
+   #' @description
+   #' runEcologicalInference
+   #' run ecological inference with current strategy
+   #' @param input.shares.fields
+   #' @param output.shares.fields
    runEcologicalInference = function(input.shares.fields,
                                      output.shares.fields){
      logger <- getLogger(self)
@@ -770,7 +804,6 @@ inherit = EcologicalInferenceStrategy,
        election.df = processor$output.election,
        description = "output"
      )
-
      logger$info("Votes",
                  total.input.votes = total.input.votes,
                  total.input.applied.votes = total.input.applied.votes,

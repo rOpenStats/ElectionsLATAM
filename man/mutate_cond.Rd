@@ -9,3 +9,9 @@ mutate_cond(.data, condition, ..., envir = parent.frame())
 \description{
 mutate_cond
 }
+\examples{
+
+}
+\author{
+ken4rab
+}

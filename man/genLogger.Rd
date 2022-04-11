@@ -9,3 +9,11 @@ genLogger(r6.object)
 \description{
 genLogger
 }
+\examples{
+eis <- EcologicalInferenceStrategy$new()
+eis$logger <- genLogger(eis)
+
+}
+\author{
+ken4rab
+}

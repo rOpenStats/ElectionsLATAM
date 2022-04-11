@@ -9,6 +9,9 @@ getHost()
 \description{
 getHost
 }
+\examples{
+getHost()
+}
 \author{
 ken4rab
 }

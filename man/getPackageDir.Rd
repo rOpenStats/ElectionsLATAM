@@ -9,6 +9,9 @@ getPackageDir()
 \description{
 getPackageDir
 }
+\examples{
+getPackageDir()
+}
 \author{
 ken4rab
 }

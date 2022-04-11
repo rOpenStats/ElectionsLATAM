@@ -9,6 +9,9 @@ getPackagePrefix()
 \description{
 getPackagePrefix
 }
+\examples{
+getPackagePrefix()
+}
 \author{
 ken4rab
 }

@@ -8,6 +8,20 @@ EcologicalInferenceStrategy
 
 EcologicalInferenceStrategy
 }
+\author{
+ken4rab
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{seed}}{for initializing random generator}
+
+\item{\code{processor}}{eir processor}
+
+\item{\code{logger}}{lgr configured for class}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

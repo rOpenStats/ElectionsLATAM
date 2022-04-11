@@ -8,6 +8,9 @@ EcologicalInferenceStrategyCalvo
 
 EcologicalInferenceStrategyCalvo
 }
+\author{
+ecalvo
+}
 \section{Super class}{
 \code{\link[ElectionsLATAM:EcologicalInferenceStrategy]{ElectionsLATAM::EcologicalInferenceStrategy}} -> \code{EcologicalInferenceStrategyCalvo}
 }
@@ -43,15 +46,40 @@ EcologicalInferenceStrategyCalvo
 \if{html}{\out{<a id="method-callDifp"></a>}}
 \if{latex}{\out{\hypertarget{method-callDifp}{}}}
 \subsection{Method \code{callDifp()}}{
+CALL.DIFP
+Calculates penalty for given parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyCalvo$callDifp(p, mx, my, covar, nR, nC, nP, const)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{p}}{- parameter vector R x (C-1)}
+
+\item{\code{mx}}{- Column marginals}
+
+\item{\code{my}}{- row marginals}
+
+\item{\code{nR}}{- number of rows}
+
+\item{\code{nC}}{- number of columns}
+
+\item{\code{nP}}{- number of precincts}
+
+\item{\code{const}}{- weight for penalty}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-paramsEstim"></a>}}
 \if{latex}{\out{\hypertarget{method-paramsEstim}{}}}
 \subsection{Method \code{paramsEstim()}}{
+Ecological Inference in the RxC case
+Penalized Least Square Minimizer
+PARAMS.ESTIM
+Estimates parameters minimizing the penalized least squares criterion
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyCalvo$paramsEstim(
   data,
@@ -63,29 +91,79 @@ EcologicalInferenceStrategyCalvo
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{- marginals (optionally with covariates)}
+
+\item{\code{x}}{- index (optional, for bootstrapping)}
+
+\item{\code{nR}}{- number of rows}
+
+\item{\code{nC}}{- number of columns}
+
+\item{\code{const}}{- weight for penalty}
+
+\item{\code{parSeed}}{- Seed for parameters (optional)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-calcFractions"></a>}}
 \if{latex}{\out{\hypertarget{method-calcFractions}{}}}
 \subsection{Method \code{calcFractions()}}{
+Calculate Fractions
+CALC.FRACTIONS
+Calculate fractions from the parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyCalvo$calcFractions(p, nR, nC, covar = F)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{p}}{- parameters}
+
+\item{\code{nR}}{- number of rows}
+
+\item{\code{nC}}{- number of columns}
+
+\item{\code{covar}}{- (Optional) Vector of covariates}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-paramsBoot"></a>}}
 \if{latex}{\out{\hypertarget{method-paramsBoot}{}}}
 \subsection{Method \code{paramsBoot()}}{
+Bootstrapping
+PARAMS.BOOT
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyCalvo$paramsBoot(data, nR, nC, bootSamples)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{- marginals (optionally, with covariates)}
+
+\item{\code{nR}}{- number of rows}
+
+\item{\code{nC}}{- number of columns}
+
+\item{\code{bootSamples}}{- number of bootstrap samples}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-runEcologicalInference"></a>}}
 \if{latex}{\out{\hypertarget{method-runEcologicalInference}{}}}
 \subsection{Method \code{runEcologicalInference()}}{
+runEcologicalInference
+run ecological inference with current strategy
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyCalvo$runEcologicalInference(
   input.shares.fields,

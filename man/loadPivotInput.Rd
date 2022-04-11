@@ -9,3 +9,9 @@ loadPivotInput(input.filepath, col_types = cols(.default = col_number()))
 \description{
 loadPivotInput
 }
+\examples{
+loadPivotInput(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
+}
+\author{
+ken4rab
+}

@@ -9,3 +9,10 @@ getLogger(r6.object)
 \description{
 getLogger
 }
+\examples{
+eis <- EcologicalInferenceStrategy$new()
+getLogger(eis)
+}
+\author{
+ken4rab
+}

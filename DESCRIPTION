@@ -1,6 +1,6 @@
 Package: ElectionsLATAM
 Type: Package
-Title: Statistics Methods for Applying in LATAM elections
+Title: Statistics Methods for Applying in LATAM Elections
 Version: 0.1.1
 Language: en-US
 Authors@R: c(
@@ -28,9 +28,9 @@ Imports: lgr,
     boot,
     networkD3,
     webshot,
-    knitr,
     testthat
 Suggests: rmarkdown, 
+    knitr,
     covr,
     lintr,
     pkgdown

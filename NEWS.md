@@ -1,14 +1,7 @@
-ElectionsLATAM 0.1.4
+
+ElectionsLATAM 0.1.1
 ============
 
 ### NEW FEATURES
 
-- Now ElectionsLATAM stuffs ' within fields values, as ' is the quote symbol used by postgresql
-- All values to methods should be passed as data.frames/tibble
-
-ElectionsLATAM 0.1.3
-============
-
-### NEW FEATURES
-
-* Initial public release
+* Initial public release. A reproducible example with Costa Rica presidential election is included

@@ -66,6 +66,7 @@ ken4rab
 \item \href{#method-checkDefinitions}{\code{EcologicalInferenceProcessor$checkDefinitions()}}
 \item \href{#method-runScenario}{\code{EcologicalInferenceProcessor$runScenario()}}
 \item \href{#method-showResultsSummary}{\code{EcologicalInferenceProcessor$showResultsSummary()}}
+\item \href{#method-expectCompatible}{\code{EcologicalInferenceProcessor$expectCompatible()}}
 \item \href{#method-clone}{\code{EcologicalInferenceProcessor$clone()}}
 }
 }
@@ -258,6 +259,18 @@ ken4rab
 \subsection{Method \code{showResultsSummary()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$showResultsSummary(election.df, description)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-expectCompatible"></a>}}
+\if{latex}{\out{\hypertarget{method-expectCompatible}{}}}
+\subsection{Method \code{expectCompatible()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$expectCompatible(
+  output.table.expected,
+  tolerance.rel = 0.1
+)}\if{html}{\out{</div>}}
 }
 
 }

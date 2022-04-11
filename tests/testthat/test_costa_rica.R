@@ -39,7 +39,7 @@ test_that("Costa Rica ecological Inference", {
   costa.rica.ein$makeSankeyDiagram(output.path = costa.rica.test.path)
   output.table.expected <-
     read_rds(file.path(costa.rica.ein.path, "ein_2021_general_2022_ballotage.rds"))
-  costa.rica.ein$expectCompatible(output.table.expected)
+  costa.rica.ein$expectCompatible(output.table.expected, tolerance.rel = 0.32)
 
   # Using potential votes
   costa.rica.ein <-

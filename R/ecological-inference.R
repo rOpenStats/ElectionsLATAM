@@ -36,7 +36,7 @@
 #' @docType class
 #' @import dplyr
 #' @import magrittr
-#' @import testthat
+#' @importFrom testthat expect_true
 #' @author ken4rab
 #' @export
 EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
@@ -542,15 +542,16 @@ public = list(
     testthat::expect_identical(rownames(self$output.table), rownames(output.table.expected))
     for (i in seq_len(nrow(self$output.table))){
       for (j in seq_len(ncol(self$output.table))){
-        if (output.table.expected[i, j] > 0){
-          diff.rel <- (self$output.table[i, j] - output.table.expected[i, j])/ output.table.expected[i, j]
+        if (output.table.expected[i, j] != 0){
+          diff.rel <- round((self$output.table[i, j] - output.table.expected[i, j]) /
+            output.table.expected[i, j], 4)
         }
         else{
           diff.rel <- self$output.table[i, j] - output.table.expected[i, j]
         }
         test.passes <- abs(diff.rel) < tolerance.rel
         if (!test.passes){
-          logger$warn("Difference in Output Matrix",
+          logger$warn("expectCompatible- diff in Output Matrix",
                       i = i, j = j,
                       row = rownames(self$output.table)[i],
                       col = colnames(self$output.table)[j],
@@ -574,7 +575,11 @@ public = list(
 #' costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
 #' loadPivotTable(file.path(costa.rica.ein.path, "2021-generales_pivot_candidatos_n4.csv"))
 #' @author ken4rab
-#' @import readr
+#' @importFrom readr read_delim
+#' @importFrom readr cols
+#' @importFrom readr col_number
+#' @importFrom readr col_double
+#' @importFrom readr col_character
 #' @import readxl
 #' @export
 loadPivotTable <- function(input.filepath, col_types = cols(.default = col_number())) {

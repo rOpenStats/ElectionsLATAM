@@ -2,8 +2,8 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "ElectionsLATAM",
-  "description": "A package for reproducible research for statistical methods over LATAM elections",
-  "name": "ElectionsLATAM: Statistics Methods for Applying in LATAM elections",
+  "description": "Is intended for applying reproducible research on statistical methods for latinamerican (& others) elections.",
+  "name": "ElectionsLATAM: Statistics Methods for Applying in LATAM Elections",
   "codeRepository": "https://github.com/rOpenStats/ElectionsLATAM",
   "issueTracker": "https://github.com/rOpenStats/ElectionsLATAM/issues",
   "license": "https://spdx.org/licenses/MIT",
@@ -30,7 +30,8 @@
     {
       "@type": "Person",
       "givenName": "Andy",
-      "familyName": "Tow"
+      "familyName": "Tow",
+      "email": "andy@towsa.com"
     }
   ],
   "maintainer": [
@@ -56,27 +57,15 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "dplyr",
-      "name": "dplyr",
+      "identifier": "knitr",
+      "name": "knitr",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=dplyr"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "testthat",
-      "name": "testthat",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=testthat"
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
     },
     {
       "@type": "SoftwareApplication",
@@ -142,6 +131,30 @@
     },
     "3": {
       "@type": "SoftwareApplication",
+      "identifier": "readr",
+      "name": "readr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=readr"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "readxl",
+      "name": "readxl",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=readxl"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
       "provider": {
@@ -152,7 +165,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "4": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "magrittr",
       "name": "magrittr",
@@ -164,7 +177,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    "5": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "foreign",
       "name": "foreign",
@@ -176,7 +189,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=foreign"
     },
-    "6": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "boot",
       "name": "boot",
@@ -188,7 +201,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=boot"
     },
-    "7": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "networkD3",
       "name": "networkD3",
@@ -200,7 +213,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=networkD3"
     },
-    "8": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "webshot",
       "name": "webshot",
@@ -212,23 +225,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=webshot"
     },
-    "9": {
+    "11": {
       "@type": "SoftwareApplication",
-      "identifier": "knitr",
-      "name": "knitr",
+      "identifier": "testthat",
+      "name": "testthat",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=knitr"
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
     },
     "SystemRequirements": null
   },
-  "fileSize": "656.714KB",
-  "releaseNotes": "https://github.com/rOpenStats/ElectionsLATAM/blob/master/NEWS.md",
-  "readme": "https://github.com/rOpenStats/ElectionsLATAM/blob/main/README.md",
-  "contIntegration": ["https://travis-ci.org/rOpenStats/ElectionsLATAM", "https://codecov.io/gh/rOpenStats/ElectionsLATAM"],
-  "developmentStatus": "https://www.repostatus.org/#active"
+  "fileSize": "684.597KB"
 }

@@ -5,4 +5,3 @@ test_that("utils", {
   loggerSetupFile(tempfile())
   testthat::expect_true(nchar(getHost()) > 0)
 })
-

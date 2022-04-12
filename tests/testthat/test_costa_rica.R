@@ -31,7 +31,7 @@ test_that("Costa Rica ecological Inference", {
   )
   costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE,
                              max.potential.votes.rel.dif = 0.2)
-  costa.rica.test.path <- file.path(tempdir(), "test","costa-rica")
+  costa.rica.test.path <- file.path(tempdir(), "test", "costa-rica")
   costa.rica.ein$exportBetab(output.folder = costa.rica.test.path, overwrite = TRUE)
   dummy <- costa.rica.ein$generateOutputJSON(costa.rica.test.path,
                                              filename = "balotaje_n4_ei.json")
@@ -71,4 +71,3 @@ test_that("Costa Rica ecological Inference", {
                              max.potential.votes.rel.dif = 0.3)
 
 })
-

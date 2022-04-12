@@ -378,7 +378,7 @@ public = list(
             filter(abs(potential.votes.rel.diff) > max.potential.votes.rel.dif)
           comparable.locations <- self$potential.votes.check %>%
                                     filter(abs(potential.votes.rel.diff) <= max.potential.votes.rel.dif)
-          comparable.locations.filter <- comparable.locations[,self$location.fields]
+          comparable.locations.filter <- comparable.locations[, self$location.fields]
           self$input.election %<>% inner_join(comparable.locations.filter,
                                               by = self$location.fields
           )
@@ -714,7 +714,7 @@ inherit = EcologicalInferenceStrategy,
    #' @param const   - weight for penalty
    #' @param parSeed - Seed for parameters (optional)
    paramsEstim = function(data, x = -1, nR, nC, const = 0.001, parSeed = -1) {
-     if (x[1] == -1) x <- 1:nrow(data)
+     if (x[1] == -1) x <- seq_len(nrow(data))
 
      mx <- data[x, 1:nR]
      my <- data[x, (nR + 1):(nR + nC)]

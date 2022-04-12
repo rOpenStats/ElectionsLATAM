@@ -36,7 +36,7 @@ test_that("Costa Rica ecological Inference", {
   dummy <- costa.rica.ein$generateOutputJSON(costa.rica.test.path,
                                              filename = "balotaje_n4_ei.json")
 
-  costa.rica.ein$makeSankeyDiagram(output.path = costa.rica.test.path)
+  costa.rica.ein$makeSankeyDiagram(output.path = NULL)
   output.table.expected <-
     readr::read_rds(file.path(costa.rica.ein.path, "ein_2021_general_2022_ballotage.rds"))
   costa.rica.ein$expectCompatible(output.table.expected, tolerance.rel = 0.32)

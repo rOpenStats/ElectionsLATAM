@@ -12,7 +12,7 @@ test_that("Costa Rica ecological Inference", {
       input.file = "2021-generales_pivot_candidatos_n4.csv",
       location.fields = c("id_unidad"),
       votes.field = "votos",
-      #potential.votes.field = "habilitados",
+      # potential.votes.field = "habilitados",
       ignore.fields = "habilitados",
       col.types = cols(
         .default = col_number(),
@@ -21,7 +21,7 @@ test_that("Costa Rica ecological Inference", {
     )
   dummy <- costa.rica.ein$loadInputPivotCandidatos()
   costa.rica.ein$output.election <- readr::read_delim(
-    #ballotage.processor$pivot.filepath,
+    # ballotage.processor$pivot.filepath,
     file.path(costa.rica.ein.path, paste("2022-ballotage_pivot_candidatos_n4.csv", sep = "_")),
     delim = ";",
     col_types = cols(
@@ -29,12 +29,15 @@ test_that("Costa Rica ecological Inference", {
       id_unidad = col_character()
     )
   )
-  costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE,
-                             max.potential.votes.rel.dif = 0.2)
+  costa.rica.ein$runScenario(
+    include.blancos = TRUE, include.ausentes = TRUE,
+    max.potential.votes.rel.dif = 0.2
+  )
   costa.rica.test.path <- file.path(tempdir(), "test", "costa-rica")
   costa.rica.ein$exportBetab(output.folder = costa.rica.test.path, overwrite = TRUE)
   dummy <- costa.rica.ein$generateOutputJSON(costa.rica.test.path,
-                                             filename = "balotaje_n4_ei.json")
+    filename = "balotaje_n4_ei.json"
+  )
 
   costa.rica.ein$makeSankeyDiagram(output.path = NULL)
   output.table.expected <-
@@ -59,7 +62,7 @@ test_that("Costa Rica ecological Inference", {
     )
   dummy <- costa.rica.ein$loadInputPivotCandidatos()
   costa.rica.ein$output.election <- readr::read_delim(
-    #ballotage.processor$pivot.filepath,
+    # ballotage.processor$pivot.filepath,
     file.path(costa.rica.ein.path, paste("2022-ballotage_pivot_candidatos_n4.csv", sep = "_")),
     delim = ";",
     col_types = cols(
@@ -67,7 +70,8 @@ test_that("Costa Rica ecological Inference", {
       id_unidad = col_character()
     )
   )
-  costa.rica.ein$runScenario(include.blancos = TRUE, include.ausentes = TRUE,
-                             max.potential.votes.rel.dif = 0.3)
-
+  costa.rica.ein$runScenario(
+    include.blancos = TRUE, include.ausentes = TRUE,
+    max.potential.votes.rel.dif = 0.3
+  )
 })

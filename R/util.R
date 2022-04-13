@@ -85,12 +85,12 @@ getLogger <- function(r6.object) {
 loggerSetupFile <- function(log.filepath) {
   lgr::basic_config()
   lgr::get_logger("root")$add_appender(AppenderFile$new(log.filepath,
-                                                        layout = LayoutFormat$new(
-                                                          fmt = "%L [%t] %m %j",
-                                                          timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
-                                                          colors = NULL,
-                                                          pad_levels = "right"
-                                                        )
+    layout = LayoutFormat$new(
+      fmt = "%L [%t] %m %j",
+      timestamp_fmt = "%Y-%m-%d %H:%M:%OS3",
+      colors = NULL,
+      pad_levels = "right"
+    )
   ))
 }
 
@@ -123,7 +123,7 @@ getEnv <- function(variable.name, package.prefix = getPackagePrefix(), fail.on.e
     readRenviron(env.file)
     # this does not work
     # dotenv::load_dot_env()
-    if (file.exists(".env")){
+    if (file.exists(".env")) {
       readRenviron(".env")
     }
   }

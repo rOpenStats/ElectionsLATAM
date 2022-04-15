@@ -239,7 +239,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "684.586KB",
+  "fileSize": "685.705KB",
   "releaseNotes": "https://github.com/rOpenStats/ElectionsLATAM/blob/master/NEWS.md",
   "readme": "https://github.com/rOpenStats/ElectionsLATAM/blob/main/README.md",
   "contIntegration": ["https://github.com/rOpenStats/ElectionsLATAM/actions", "https://app.codecov.io/gh/rOpenStats/ElectionsLATAM"],

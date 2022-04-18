@@ -52,13 +52,6 @@ costa.rica.test.path <- file.path(tempdir(), "test","costa-rica")
 costa.rica.ein$exportBetab(output.folder = costa.rica.test.path, overwrite = TRUE)
 dummy <- costa.rica.ein$generateOutputJSON(costa.rica.test.path,
                                            filename = "balotaje_n4_ei.json")
-applied.test.path <- NULL
-if (getOs() != "windows")
-{
-  #Only making sankey snapshot when OS is not windows
-  # Windows has problems when executing webshot.js. 
-  applied.test.path <- costa.rica.test.path
-}
-costa.rica.ein$makeSankeyDiagram(output.path = applied.test.path)
+costa.rica.ein$makeSankeyDiagram(output.path = costa.rica.test.path)
 
 ```

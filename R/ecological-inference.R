@@ -3,10 +3,10 @@
 #' library(ElectionsLATAM)
 #' library(readr)
 #' costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
-#' ecological.inference.calvo <- EcologicalInferenceStrategyCalvoEtAl$new()
+#' ecological.inference.wittenberg <- EcologicalInferenceStrategyWittenbergEtAl$new()
 #' costa.rica.ein <-
 #'   EcologicalInferenceProcessor$new(
-#'     ecological.inference.strategy = ecological.inference.calvo,
+#'     ecological.inference.strategy = ecological.inference.wittenberg,
 #'     election.name = "2022-costa-rica-general-ballotage-n4",
 #'     scenario = "final",
 #'     data.input.path = costa.rica.ein.path,
@@ -65,7 +65,9 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
     data.folder.d3 = NA,
     seed = NA,
     # filter
-    locations.available = NULL,
+    locations.available   = NULL,
+    potential.input.only = NULL,
+    potential.output.only = NULL,
     potential.votes.check = NULL,
     # output
     output.table = NA,
@@ -281,8 +283,12 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         }
       }
     },
-    convertShares2Votes = function(election.df) {
+    convertShares2Votes = function(election.df, election.desc) {
+      logger <- getLogger(self)
       share.fields <- self$getSharesFields(names(election.df))
+      logger$debug("Converting shares.fields",
+                   share.fields = paste(share.fields, collapse = ", "),
+                   election.desc = election.desc)
       rows.sums <- apply(election.df[, share.fields], MARGIN = 1, FUN = sum)
       rows.sums.min <- min(rows.sums, na.rm = TRUE)
       rows.sums.max <- max(rows.sums, na.rm = TRUE)
@@ -348,16 +354,31 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         }
         self$output.election %<>% arrange(across(self$location.fields))
         self$locations.available %<>% arrange(across(self$location.fields))
-        self$input.election %<>% inner_join(self$locations.available,
-          by = self$location.fields
-        )
-        self$output.election %<>% inner_join(self$locations.available,
-          by = self$location.fields
-        )
+
+        potential.input.only <- self$input.election %>% anti_join(self$locations.available, by = self$location.fields)
+        potential.output.only <- self$output.election %>% anti_join(self$locations.available, by = self$location.fields)
+
+        if (nrow(potential.input.only) > 0){
+          logger$warn("Districts only in potential.input.only",
+                      nrow = nrow(potential.input.only),
+                      total.votes = sum(potential.input.only[, self$votes.field])
+                      )
+          self$potential.input.only <- potential.input.only
+        }
+        if (nrow(potential.output.only) > 0){
+          logger$warn("Districts only in potential.output.only",
+                      nrow = nrow(potential.output.only),
+                      total.votes = sum(potential.output.only[, self$votes.field])
+          )
+          self$potential.output.only <- potential.output.only
+        }
+        self$input.election %<>%
+          inner_join(self$locations.available, by = self$location.fields)
+        self$output.election %<>%
+          inner_join(self$locations.available, by = self$location.fields)
         logger$info("After filtering locations",
           input.locations = nrow(self$input.election),
-          output.locations = nrow(self$output.election)
-        )
+          output.locations = nrow(self$output.election))
         # Check comparability between input-output
         votes.comparation.field <- self$votes.field
         if (!is.null(self$potential.votes.field)) {
@@ -408,7 +429,6 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
           }
         }
       }
-
       input.diff.output <- setdiff(
         self$input.election[, self$location.fields],
         self$output.election[, self$location.fields]
@@ -480,8 +500,10 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       output.votes.col <- which(self$votes.field == names(self$output.election))
       self$input.election[, self$ignore.fields] <- NULL
       self$output.election[, self$ignore.fields] <- NULL
-      self$input.election <- self$convertShares2Votes(election.df = self$input.election)
-      self$output.election <- self$convertShares2Votes(election.df = self$output.election)
+      self$input.election <- self$convertShares2Votes(election.df = self$input.election,
+                                                      election.desc = "input")
+      self$output.election <- self$convertShares2Votes(election.df = self$output.election,
+                                                       election.desc = "output")
       self$fixLocationsAvailable(max.potential.votes.rel.dif = max.potential.votes.rel.dif)
       if (include.ausentes) {
         input.ausente.col <- input.votes.col
@@ -647,9 +669,9 @@ EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
   )
 )
 
-#' EcologicalInferenceStrategyCalvoEtAl
+#' EcologicalInferenceStrategyWittenbergEtAl
 #' @examples
-#' ein <- EcologicalInferenceStrategyCalvoEtAl$new()
+#' ein <- EcologicalInferenceStrategyWittenbergEtAl$new()
 #' # Cannot run without having a processor
 #' # ein$runEcologicalInference(NULL, NULL)
 #' @importFrom R6 R6Class
@@ -658,9 +680,9 @@ EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
 #' @import boot
 #' @import networkD3
 #' @import webshot
-#' @author ecalvo
+#' @author eWittenberg
 #' @export
-EcologicalInferenceStrategyCalvoEtAl <- R6Class("EcologicalInferenceStrategyCalvoEtAl",
+EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrategyWittenbergEtAl",
   inherit = EcologicalInferenceStrategy,
   public = list(
     #' @field estsPG estimation parameters

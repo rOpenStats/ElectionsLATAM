@@ -15,7 +15,7 @@ ein <- EcologicalInferenceStrategyWittenbergEtAl$new()
 # ein$runEcologicalInference(NULL, NULL)
 }
 \author{
-eWittenberg
+wittenberg
 }
 \section{Super class}{
 \code{\link[ElectionsLATAM:EcologicalInferenceStrategy]{ElectionsLATAM::EcologicalInferenceStrategy}} -> \code{EcologicalInferenceStrategyWittenbergEtAl}

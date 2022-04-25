@@ -680,7 +680,7 @@ EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
 #' @import boot
 #' @import networkD3
 #' @import webshot
-#' @author eWittenberg
+#' @author wittenberg
 #' @export
 EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrategyWittenbergEtAl",
   inherit = EcologicalInferenceStrategy,

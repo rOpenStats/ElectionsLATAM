@@ -1,12 +1,12 @@
 Package: ElectionsLATAM
 Type: Package
 Title: Statistics Methods for Applying in LATAM Elections
-Version: 0.1.1
+Version: 0.1.2
 Language: en-US
 Authors@R: c(
     person("Alejandro", "Baranek",,"abaranek@dc.uba.ar", c("cre", "aut")),
-    person("Ernesto","Wittenberg",,"eWittenberg@umd.edu", c("aut")),
-    person("Andy","Tow",,"andy@towsa.com", c("aut"))
+    person("Andy","Tow",,"andy@towsa.com", c("aut")),
+    person("Jason","Wittenberg",,"", c("aut"))
     )
 Maintainer: Alejandro Baranek <abaranek@dc.uba.ar>
 Description: Is intended for applying reproducible research on statistical methods for latinamerican (& others) elections.

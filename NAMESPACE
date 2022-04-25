@@ -2,7 +2,7 @@
 
 export(EcologicalInferenceProcessor)
 export(EcologicalInferenceStrategy)
-export(EcologicalInferenceStrategyCalvoEtAl)
+export(EcologicalInferenceStrategyWittenbergEtAl)
 export(genLogger)
 export(getEnv)
 export(getHost)

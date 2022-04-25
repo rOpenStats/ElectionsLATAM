@@ -13,10 +13,10 @@ EcologicalInferenceProcessor
 library(ElectionsLATAM)
 library(readr)
 costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
-ecological.inference.calvo <- EcologicalInferenceStrategyCalvoEtAl$new()
+ecological.inference.wittenberg <- EcologicalInferenceStrategyWittenbergEtAl$new()
 costa.rica.ein <-
   EcologicalInferenceProcessor$new(
-    ecological.inference.strategy = ecological.inference.calvo,
+    ecological.inference.strategy = ecological.inference.wittenberg,
     election.name = "2022-costa-rica-general-ballotage-n4",
     scenario = "final",
     data.input.path = costa.rica.ein.path,
@@ -192,7 +192,7 @@ ken4rab
 \if{latex}{\out{\hypertarget{method-convertShares2Votes}{}}}
 \subsection{Method \code{convertShares2Votes()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$convertShares2Votes(election.df)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$convertShares2Votes(election.df, election.desc)}\if{html}{\out{</div>}}
 }
 
 }

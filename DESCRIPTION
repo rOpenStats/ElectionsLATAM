@@ -5,7 +5,7 @@ Version: 0.1.1
 Language: en-US
 Authors@R: c(
     person("Alejandro", "Baranek",,"abaranek@dc.uba.ar", c("cre", "aut")),
-    person("Ernesto","Calvo",,"ecalvo@umd.edu", c("aut")),
+    person("Ernesto","Wittenberg",,"eWittenberg@umd.edu", c("aut")),
     person("Andy","Tow",,"andy@towsa.com", c("aut"))
     )
 Maintainer: Alejandro Baranek <abaranek@dc.uba.ar>

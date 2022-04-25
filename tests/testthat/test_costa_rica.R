@@ -2,10 +2,10 @@
 
 test_that("Costa Rica ecological Inference", {
   costa.rica.ein.path <- file.path(getPackageDir(), "costa-rica")
-  ecological.inference.calvo <- EcologicalInferenceStrategyCalvoEtAl$new()
+  ecological.inference.wittenberg <- EcologicalInferenceStrategyWittenbergEtAl$new()
   costa.rica.ein <-
     EcologicalInferenceProcessor$new(
-      ecological.inference.strategy = ecological.inference.calvo,
+      ecological.inference.strategy = ecological.inference.wittenberg,
       election.name = "2022-costa-rica-general-ballotage-n4",
       scenario = "final",
       data.input.path = costa.rica.ein.path,
@@ -47,7 +47,7 @@ test_that("Costa Rica ecological Inference", {
   # Using potential votes
   costa.rica.ein <-
     EcologicalInferenceProcessor$new(
-      ecological.inference.strategy = ecological.inference.calvo,
+      ecological.inference.strategy = ecological.inference.wittenberg,
       election.name = "2022-costa-rica-general-ballotage-n4",
       scenario = "final",
       data.input.path = costa.rica.ein.path,

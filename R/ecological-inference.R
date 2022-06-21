@@ -299,9 +299,10 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       }
       election.df
     },
-    convertVotes2Shares = function(election.df) {
+    convertVotes2Shares = function(election.df, total.votes = rowSums(election.df[, self$getSharesFields(names(election.df))]))
+    {
       share.fields <- self$getSharesFields(names(election.df))
-      total.votes <- rowSums(election.df[, share.fields])
+      #total.votes <- rowSums(election.df[, share.fields])
       votes.rows <- which(total.votes > 0)
       for (share.field in share.fields) {
         election.df[votes.rows, share.field] <- election.df[votes.rows, share.field] / total.votes[votes.rows]
@@ -313,6 +314,7 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       election.df
     },
     getSharesFields = function(election.fields) {
+      logger <- getLogger(self)
       share.fields <- election.fields
       share.fields <- setdiff(share.fields, c(self$location.fields, self$votes.field, self$potential.votes.field))
       not.candidate.fields <- c(
@@ -323,6 +325,9 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       candidate.fields <- setdiff(share.fields, not.candidate.fields)
       not.candidate.fields <- sort(intersect(not.candidate.fields, share.fields), decreasing = TRUE)
       ret <- c(sort(candidate.fields), not.candidate.fields)
+      logger$trace("getSharesFields",
+                   share.fields = paste(ret, ", "),
+                   non.candidate.fields = paste(not.candidate.fields, ", "))
       ret
     },
     fixLocationsAvailable = function(max.potential.votes.rel.dif = Inf) {
@@ -411,21 +416,23 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
             self$output.election %<>% inner_join(comparable.locations.filter,
               by = self$location.fields
             )
-            logger$info("After filtering comparable locations",
-              threshold = max.potential.votes.rel.dif,
-              non.comparable.locations = nrow(non.comparable.locations),
-              non.comparable.votes = max(
-                sum(non.comparable.locations$votes_input),
-                sum(non.comparable.locations$votes_output)
-              ),
-              comparable.locations = nrow(comparable.locations),
-              comparable.votes = max(
-                sum(comparable.locations$votes_input),
-                sum(comparable.locations$votes_output)
-              ),
-              input.locations = nrow(self$input.election),
-              output.locations = nrow(self$output.election)
-            )
+            if (nrow(non.comparable.locations) > 0){
+              logger$warn("After filtering comparable locations",
+                          threshold = max.potential.votes.rel.dif,
+                          non.comparable.locations = nrow(non.comparable.locations),
+                          non.comparable.votes = max(
+                            sum(non.comparable.locations$votes_input),
+                            sum(non.comparable.locations$votes_output)
+                          ),
+                          comparable.locations = nrow(comparable.locations),
+                          comparable.votes = max(
+                            sum(comparable.locations$votes_input),
+                            sum(comparable.locations$votes_output)
+                          ),
+                          input.locations = nrow(self$input.election),
+                          output.locations = nrow(self$output.election)
+                          )
+            }
           }
         }
       }
@@ -486,6 +493,9 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
     },
     runScenario = function(include.blancos = TRUE, include.ausentes = TRUE,
                            max.potential.votes.rel.dif = Inf) {
+      if (include.ausentes){
+        stop("FIXME. Now applies ausentes automatically in strategy. Cannot be called with TRUE")
+      }
       logger <- getLogger(self)
       self$checkDefinitions()
       logger$info("Setting seed", seed = self$seed)
@@ -493,8 +503,18 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       if (is.null(self$input.election.original)) {
         self$input.election.original <- self$input.election
       }
+      else{
+        if (!identical(names(self$input.election), names(self$input.election.original))){
+          self$input.election <- self$input.election.original
+        }
+      }
       if (is.null(self$output.election.original)) {
         self$output.election.original <- self$output.election
+      }
+      else{
+        if (!identical(names(self$output.election), names(self$output.election.original))){
+          self$output.election <- self$output.election.original
+        }
       }
       input.votes.col <- which(self$votes.field == names(self$input.election))
       output.votes.col <- which(self$votes.field == names(self$output.election))
@@ -530,15 +550,16 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
           total.votes.input.df <- total.votes.df
           total.votes.output.df <- total.votes.df
         }
-        self$input.election[, input.ausente.col] <- total.votes.input.df[, 1] - self$input.election[, input.votes.col]
-        self$output.election[, output.ausente.col] <- total.votes.output.df[, 1] - self$output.election[, output.votes.col]
+        self$input.election[, input.ausente.col] <-
+                  total.votes.input.df[, 1] - self$input.election[, input.votes.col]
+        self$output.election[, output.ausente.col] <-
+                  total.votes.output.df[, 1] - self$output.election[, output.votes.col]
         # which(self$output.election$Departamento ==  "RO" &
         #         self$output.election$Serie == "ECE")
         # self$output.election %>% filter(Departamento == "RO" & Serie == "ECE")
         # self$output.election[281,]
         # self$input.election[281,]
       }
-
       self$fixEmpty()
 
 
@@ -546,6 +567,10 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       # output.shares.fields <- names(self$output.election)[2:output.ausente.col]
       input.shares.fields <- self$getSharesFields(election.fields = names(self$input.election))
       output.shares.fields <- self$getSharesFields(election.fields = names(self$output.election))
+
+      #debug
+      input.shares.fields <<- input.shares.fields
+      output.shares.fields <<- output.shares.fields
       if (!include.blancos) {
         input.shares.fields <- input.shares.fields[input.shares.fields != "blanco_y_nulo"]
         output.shares.fields <- output.shares.fields[output.shares.fields != "blanco_y_nulo"]
@@ -656,6 +681,7 @@ EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
     #' @field logger lgr configured for class
     logger = NA,
     initialize = function(seed = 143324) {
+      self$seed <- seed
       self$logger <- genLogger(self)
     },
     setProcessor = function(processor) {
@@ -687,6 +713,10 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
   public = list(
     #' @field estsPG estimation parameters
     estsPG = NA,
+    #' @field input shares
+    dsINpre = NA,
+    #' @field dsOUTpre shares
+    dsOUTpre = NA,
     #' @field fracsPG fractions
     fracsPG = NA,
     initialize = function(seed = 143324) {
@@ -702,7 +732,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param nC    - number of columns
     #' @param nP    - number of precincts
     #' @param const - weight for penalty
-    callDifp = function(p, mx, my, covar, nR, nC, nP, const) {
+    #' @param w       - weights for each observation
+    callDifp = function(p, mx, my, covar, nR, nC, nP, const, w = 1/nP) {
       pen <- 0
       d <- seq(from = 0, to = 0, length = nR * (nC - 1))
       g <- p[1:(nR * (nC - 1))]
@@ -721,7 +752,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
             ebeta <- exp(gamma[, , i]) / (1 + exp(gamma[, , i]))
           }
           yhat <- mx[i, ] %*% ebeta
-          diff <- diff + sum((yhat - my[i, -C])^2)
+          diff <- diff + sum(w * (yhat - my[i, -C])^2)
           # diff <- diff + sum((yhat-my[i,-nC])^2) + (const*sum(gamma[,,i]^2));
           # diff <- diff + sum((yhat-my[i,-C])^2) + (10000*sum(gamma[,,i]^2));
         }
@@ -732,7 +763,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         expo <- exp(gamma)
         ebeta <- exp(gamma) / (1 + apply(exp(gamma), 1, sum))
         yhat <- mx %*% ebeta
-        diff <- sum((yhat - my[, -nC])^2) + (const * sum(gamma^2))
+        diff <- sum(w * (yhat - my[, -nC])^2) + (const * sum(gamma^2))
         # is.numeric(my[483,])
       }
       return(diff)
@@ -748,7 +779,10 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param nC      - number of columns
     #' @param const   - weight for penalty
     #' @param parSeed - Seed for parameters (optional)
-    paramsEstim = function(data, x = -1, nR, nC, const = 0.001, parSeed = -1) {
+    #' @param w       - weights for each observation
+    paramsEstim = function(data, x = -1, nR, nC, const = 0.001,
+                           parSeed = -1, w = 1/nrow(data))
+    {
       if (x[1] == -1) x <- seq_len(nrow(data))
 
       mx <- data[x, 1:nR]
@@ -765,7 +799,9 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
           parSeed <- rnorm(nR * (nC - 1))
         }
       }
-      fit <- optim(parSeed, fn = self$callDifp, method = "L-BFGS-B", covar = covar, nR = nR, nC = nC, nP = nP, mx = mx, my = my, const = const)
+      fit <- optim(parSeed, fn = self$callDifp, method = "L-BFGS-B",
+                   covar = covar, nR = nR, nC = nC, nP = nP, mx = mx, my = my,
+                   const = const, w = w)
       # , method="L-BFGS-B", method="SANN"
       return(fit$par)
     },
@@ -810,7 +846,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param nC          - number of columns
     #' @param bootSamples - number of bootstrap samples
     paramsBoot = function(data, nR, nC, bootSamples) {
-      output <- boot(data = data, statistic = self$paramsEstim, R = bootSamples, nR = nR, nC = nC)
+      output <- boot(data = data, statistic = self$paramsEstim,
+                     R = bootSamples, nR = nR, nC = nC)
       return(output)
     },
     #' @description
@@ -824,28 +861,49 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       processor <- self$processor
       stopifnot(!is.null(processor))
 
-      dsINpre.zones <- self$input.election[, self$location.fields]
+      dsINpre.zones <- processor$input.election[, processor$location.fields]
+      dsOutpre.zones <- processor$output.election[, processor$location.fields]
+      stopifnot(identical(dsINpre.zones, dsOutpre.zones))
+      if (is.null(processor$potential.votes.field)){
+        election.votes <-
+          cbind(processor$input.election[, processor$votes.field],
+                processor$output.election[, processor$votes.field])
+      }
+      else{
+        election.votes <-
+          cbind(processor$input.election[, processor$potential.votes.field],
+                processor$output.election[, processor$potential.votes.field])
+        print("Debug next time using it")
+        election.votes <<- election.votes
+        self.debug <<- self
+        stopifnot(min(election.votes[, 1] == election.votes[, 2]) == 1)
+        browser()
+      }
+      potential.votes <- apply(election.votes, MARGIN = 1, FUN = max)
+      votes.local.share <- potential.votes / sum(potential.votes)
       # input
       dsINpre <- processor$input.election[, input.shares.fields]
-      dsINpre <- processor$convertVotes2Shares(dsINpre)
+      dsINpre <- processor$convertVotes2Shares(dsINpre, potential.votes)
       dsINpre <- cbind(dsINpre, 1 - rowSums(dsINpre))
       colnames(dsINpre)
       dsINpre <- as.matrix(dsINpre)
+      self$dsINpre <- dsINpre
       # dsINpre <<- dsINpre
       # Emtpy rows
       input.check.col <- ncol(dsINpre)
       which(dsINpre[, input.check.col] == 1)
       empty.rows <- which(processor$input.election[, processor$votes.field] == 0)
-      dsINpre[which(processor$input.election[, processor$votes.field] == 0), ]
+      stopifnot(nrow(dsINpre[which(processor$input.election[, processor$votes.field] == 0), ]) == 0)
 
       # output
       dsOUTpre <- processor$output.election[, output.shares.fields]
-      dsOUTpre <- processor$convertVotes2Shares(dsOUTpre)
+      dsOUTpre <- processor$convertVotes2Shares(dsOUTpre, potential.votes)
       dsOUTpre <- cbind(dsOUTpre, 1 - rowSums(dsOUTpre))
       # dsOUTpre %<>% filter(COD_ZONA %in% input.election$COD_ZONA)
       colnames(dsOUTpre)
       dsOUTpre <- as.matrix(dsOUTpre)
 
+      self$dsOUTpre <- dsOUTpre
       if (length(empty.rows) > 0) {
         locations.empty <- apply(processor$input.election[empty.rows, processor$location.fields], MARGIN = 1, FUN = function(x) paste(x, collapse = "-"))
         logger$warn("Removing rows with no votes",
@@ -879,13 +937,15 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       nd.output.check.col <- nR + output.check.col
       ncol(newdata)
       # Empty rows
-      new.data.empty.rows <- which(newdata[, nd.input.check.col] == 1 | newdata[, nd.output.check.col] == 1)
+      new.data.empty.rows <- which(newdata[, nd.input.check.col] == votes.share | newdata[, nd.output.check.col] == votes.share)
       if (length(new.data.empty.rows) > 0) {
+        logger$warn("Empty rows in preprocessing for EI",
+                    new.data.empty.rows = length(new.data.empty.rows))
         newdata <- newdata[-new.data.empty.rows, ]
       }
       logger$info("ParamsEstim", nR = nR, nC = nC)
-
-      self$estsPG <- self$paramsEstim(newdata, nR = nR, nC = nC)
+      self$estsPG <- self$paramsEstim(newdata, nR = nR, nC = nC,
+                                      w = votes.local.share)
       logger$info("calcFractions")
       self$fracsPG <- self$calcFractions(self$estsPG, nR = nR, nC = nC)
       colnames(self$fracsPG) <- colnames(dsOUTpre)

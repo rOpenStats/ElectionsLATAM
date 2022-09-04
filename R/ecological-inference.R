@@ -117,14 +117,14 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       row.names <- rownames(self$output.table)
       n <- nrow(self$output.table)
       m <- ncol(self$output.table)
-      for (j in seq_len(m - 1)) {
+      for (j in seq_len(m)) {
         output.party <- col.names[j]
         output.party.values <- list()
-        for (i in seq_len(n - 1)) {
+        for (i in seq_len(n)) {
           input.party <- row.names[i]
           output.party.values[[input.party]] <- self$output.table[i, j]
         }
-        output.party.values[["Total"]] <- sum(self$output.table[seq_len(n - 1), j])
+        output.party.values[["Total"]] <- sum(self$output.table[seq_len(n), j])
         ret[[output.party]] <- output.party.values
       }
       self$output <- ret
@@ -143,9 +143,9 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       stopifnot(indicator %in% allowed.indicators)
       ret <- data.frame(source = character(), target = character(), value = numeric())
       input.names <- rownames(self$output.table)
-      input.names <- input.names[seq_len(length(input.names) - 1)]
+      input.names <- input.names[seq_len(length(input.names))]
       output.names <- colnames(self$output.table)
-      output.names <- output.names[seq_len(length(output.names) - 1)]
+      output.names <- output.names[seq_len(length(output.names))]
       rows <- seq_len(length(input.names))
       cols <- seq_len(length(output.names))
       total.votes <- sum(self$output.table[rows, cols])
@@ -884,7 +884,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       # input
       dsINpre <- processor$input.election[, input.shares.fields]
       dsINpre <- processor$convertVotes2Shares(dsINpre, potential.votes)
-      dsINpre <- cbind(dsINpre, 1 - rowSums(dsINpre))
+      dsINpre <- cbind(dsINpre, "ausentes-1" = 1 - rowSums(dsINpre))
       colnames(dsINpre)
       dsINpre <- as.matrix(dsINpre)
       self$dsINpre <- dsINpre
@@ -898,7 +898,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       # output
       dsOUTpre <- processor$output.election[, output.shares.fields]
       dsOUTpre <- processor$convertVotes2Shares(dsOUTpre, potential.votes)
-      dsOUTpre <- cbind(dsOUTpre, 1 - rowSums(dsOUTpre))
+      dsOUTpre <- cbind(dsOUTpre, "ausentes-2" = 1 - rowSums(dsOUTpre))
       # dsOUTpre %<>% filter(COD_ZONA %in% input.election$COD_ZONA)
       colnames(dsOUTpre)
       dsOUTpre <- as.matrix(dsOUTpre)
@@ -954,9 +954,9 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       ## Datos Summary
       # VotosPaso <- data1[,7:16]
       # cols.general <- ncol(input.election)
-      totals.input <- processor$input.election[, processor$votes.field]
       # VotosInput <- processor$input.election[, c(2:(cols.general - 1))]
       VotosInput <- processor$input.election[, input.shares.fields]
+      totals.input <- processor$input.election[, processor$votes.field]
       # cols.ballotage <- ncol(processor$output.election)
       # VotosOutput <- processor$output.election[, c(2:3, cols.ballotage)]
       VotosOutput <- processor$output.election[, output.shares.fields]
@@ -973,10 +973,13 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       # for (c in 1:(ncol(VotosInput))) {
       #   VotosInput[, c] <- VotosInput[, c] * totals.input
       # }
-      VotosInput <- cbind(VotosInput, round(totals.input - rowSums(VotosInput), 3))
-      VotosOutput <- cbind(VotosOutput, totals.output - rowSums(VotosOutput))
+      VotosInput <- cbind(VotosInput, round(potential.votes - rowSums(VotosInput), 3))
+      VotosOutput <- cbind(VotosOutput, round(potential.votes - rowSums(VotosOutput), 3))
+
       colnames(VotosInput) <- colnames(dsINpre)
       colnames(VotosOutput) <- colnames(dsOUTpre)
+      colnames(VotosInput)[ncol(VotosInput)] <- "ausentes-1"
+      colnames(VotosOutput)[ncol(VotosOutput)] <- "ausentes-2"
       processor$output.table <- round(self$fracsPG * colSums(VotosInput), 0)
       if (processor$reverse.mapping) {
         colnames <- colnames(processor$output.table)

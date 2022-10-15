@@ -51,31 +51,31 @@ ken4rab
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{EcologicalInferenceProcessor$new()}}
-\item \href{#method-wallTime}{\code{EcologicalInferenceProcessor$wallTime()}}
-\item \href{#method-generateOutput}{\code{EcologicalInferenceProcessor$generateOutput()}}
-\item \href{#method-loadInputPivotCandidatos}{\code{EcologicalInferenceProcessor$loadInputPivotCandidatos()}}
-\item \href{#method-generateNormalizedOutput}{\code{EcologicalInferenceProcessor$generateNormalizedOutput()}}
-\item \href{#method-makeSankeyDiagram}{\code{EcologicalInferenceProcessor$makeSankeyDiagram()}}
-\item \href{#method-getFilename}{\code{EcologicalInferenceProcessor$getFilename()}}
-\item \href{#method-generateOutputJSON}{\code{EcologicalInferenceProcessor$generateOutputJSON()}}
-\item \href{#method-getBetab}{\code{EcologicalInferenceProcessor$getBetab()}}
-\item \href{#method-exportBetab}{\code{EcologicalInferenceProcessor$exportBetab()}}
-\item \href{#method-convertShares2Votes}{\code{EcologicalInferenceProcessor$convertShares2Votes()}}
-\item \href{#method-convertVotes2Shares}{\code{EcologicalInferenceProcessor$convertVotes2Shares()}}
-\item \href{#method-getSharesFields}{\code{EcologicalInferenceProcessor$getSharesFields()}}
-\item \href{#method-fixLocationsAvailable}{\code{EcologicalInferenceProcessor$fixLocationsAvailable()}}
-\item \href{#method-fixEmpty}{\code{EcologicalInferenceProcessor$fixEmpty()}}
-\item \href{#method-checkDefinitions}{\code{EcologicalInferenceProcessor$checkDefinitions()}}
-\item \href{#method-runScenario}{\code{EcologicalInferenceProcessor$runScenario()}}
-\item \href{#method-showResultsSummary}{\code{EcologicalInferenceProcessor$showResultsSummary()}}
-\item \href{#method-expectCompatible}{\code{EcologicalInferenceProcessor$expectCompatible()}}
-\item \href{#method-clone}{\code{EcologicalInferenceProcessor$clone()}}
+\item \href{#method-EcologicalInferenceProcessor-new}{\code{EcologicalInferenceProcessor$new()}}
+\item \href{#method-EcologicalInferenceProcessor-wallTime}{\code{EcologicalInferenceProcessor$wallTime()}}
+\item \href{#method-EcologicalInferenceProcessor-generateOutput}{\code{EcologicalInferenceProcessor$generateOutput()}}
+\item \href{#method-EcologicalInferenceProcessor-loadInputPivotCandidatos}{\code{EcologicalInferenceProcessor$loadInputPivotCandidatos()}}
+\item \href{#method-EcologicalInferenceProcessor-generateNormalizedOutput}{\code{EcologicalInferenceProcessor$generateNormalizedOutput()}}
+\item \href{#method-EcologicalInferenceProcessor-makeSankeyDiagram}{\code{EcologicalInferenceProcessor$makeSankeyDiagram()}}
+\item \href{#method-EcologicalInferenceProcessor-getFilename}{\code{EcologicalInferenceProcessor$getFilename()}}
+\item \href{#method-EcologicalInferenceProcessor-generateOutputJSON}{\code{EcologicalInferenceProcessor$generateOutputJSON()}}
+\item \href{#method-EcologicalInferenceProcessor-getBetab}{\code{EcologicalInferenceProcessor$getBetab()}}
+\item \href{#method-EcologicalInferenceProcessor-exportBetab}{\code{EcologicalInferenceProcessor$exportBetab()}}
+\item \href{#method-EcologicalInferenceProcessor-convertShares2Votes}{\code{EcologicalInferenceProcessor$convertShares2Votes()}}
+\item \href{#method-EcologicalInferenceProcessor-convertVotes2Shares}{\code{EcologicalInferenceProcessor$convertVotes2Shares()}}
+\item \href{#method-EcologicalInferenceProcessor-getSharesFields}{\code{EcologicalInferenceProcessor$getSharesFields()}}
+\item \href{#method-EcologicalInferenceProcessor-fixLocationsAvailable}{\code{EcologicalInferenceProcessor$fixLocationsAvailable()}}
+\item \href{#method-EcologicalInferenceProcessor-fixEmpty}{\code{EcologicalInferenceProcessor$fixEmpty()}}
+\item \href{#method-EcologicalInferenceProcessor-checkDefinitions}{\code{EcologicalInferenceProcessor$checkDefinitions()}}
+\item \href{#method-EcologicalInferenceProcessor-runScenario}{\code{EcologicalInferenceProcessor$runScenario()}}
+\item \href{#method-EcologicalInferenceProcessor-showResultsSummary}{\code{EcologicalInferenceProcessor$showResultsSummary()}}
+\item \href{#method-EcologicalInferenceProcessor-expectCompatible}{\code{EcologicalInferenceProcessor$expectCompatible()}}
+\item \href{#method-EcologicalInferenceProcessor-clone}{\code{EcologicalInferenceProcessor$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$new(
@@ -98,8 +98,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-wallTime"></a>}}
-\if{latex}{\out{\hypertarget{method-wallTime}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-wallTime"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-wallTime}{}}}
 \subsection{Method \code{wallTime()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$wallTime(expr)}\if{html}{\out{</div>}}
@@ -107,8 +107,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-generateOutput"></a>}}
-\if{latex}{\out{\hypertarget{method-generateOutput}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-generateOutput"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-generateOutput}{}}}
 \subsection{Method \code{generateOutput()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$generateOutput()}\if{html}{\out{</div>}}
@@ -116,8 +116,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-loadInputPivotCandidatos"></a>}}
-\if{latex}{\out{\hypertarget{method-loadInputPivotCandidatos}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-loadInputPivotCandidatos"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-loadInputPivotCandidatos}{}}}
 \subsection{Method \code{loadInputPivotCandidatos()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$loadInputPivotCandidatos(
@@ -127,8 +127,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-generateNormalizedOutput"></a>}}
-\if{latex}{\out{\hypertarget{method-generateNormalizedOutput}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-generateNormalizedOutput"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-generateNormalizedOutput}{}}}
 \subsection{Method \code{generateNormalizedOutput()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$generateNormalizedOutput(indicator = "perc")}\if{html}{\out{</div>}}
@@ -136,8 +136,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-makeSankeyDiagram"></a>}}
-\if{latex}{\out{\hypertarget{method-makeSankeyDiagram}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-makeSankeyDiagram"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-makeSankeyDiagram}{}}}
 \subsection{Method \code{makeSankeyDiagram()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$makeSankeyDiagram(output.path = NULL)}\if{html}{\out{</div>}}
@@ -145,8 +145,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getFilename"></a>}}
-\if{latex}{\out{\hypertarget{method-getFilename}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-getFilename"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-getFilename}{}}}
 \subsection{Method \code{getFilename()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$getFilename(file.prefix, extension = "csv")}\if{html}{\out{</div>}}
@@ -154,8 +154,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-generateOutputJSON"></a>}}
-\if{latex}{\out{\hypertarget{method-generateOutputJSON}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-generateOutputJSON"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-generateOutputJSON}{}}}
 \subsection{Method \code{generateOutputJSON()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$generateOutputJSON(
@@ -167,8 +167,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getBetab"></a>}}
-\if{latex}{\out{\hypertarget{method-getBetab}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-getBetab"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-getBetab}{}}}
 \subsection{Method \code{getBetab()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$getBetab()}\if{html}{\out{</div>}}
@@ -176,8 +176,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-exportBetab"></a>}}
-\if{latex}{\out{\hypertarget{method-exportBetab}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-exportBetab"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-exportBetab}{}}}
 \subsection{Method \code{exportBetab()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$exportBetab(
@@ -188,8 +188,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-convertShares2Votes"></a>}}
-\if{latex}{\out{\hypertarget{method-convertShares2Votes}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-convertShares2Votes"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-convertShares2Votes}{}}}
 \subsection{Method \code{convertShares2Votes()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$convertShares2Votes(election.df, election.desc)}\if{html}{\out{</div>}}
@@ -197,17 +197,20 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-convertVotes2Shares"></a>}}
-\if{latex}{\out{\hypertarget{method-convertVotes2Shares}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-convertVotes2Shares"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-convertVotes2Shares}{}}}
 \subsection{Method \code{convertVotes2Shares()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$convertVotes2Shares(election.df)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$convertVotes2Shares(
+  election.df,
+  total.votes = rowSums(election.df[, self$getSharesFields(names(election.df))])
+)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getSharesFields"></a>}}
-\if{latex}{\out{\hypertarget{method-getSharesFields}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-getSharesFields"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-getSharesFields}{}}}
 \subsection{Method \code{getSharesFields()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$getSharesFields(election.fields)}\if{html}{\out{</div>}}
@@ -215,8 +218,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fixLocationsAvailable"></a>}}
-\if{latex}{\out{\hypertarget{method-fixLocationsAvailable}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-fixLocationsAvailable"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-fixLocationsAvailable}{}}}
 \subsection{Method \code{fixLocationsAvailable()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$fixLocationsAvailable(
@@ -226,8 +229,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fixEmpty"></a>}}
-\if{latex}{\out{\hypertarget{method-fixEmpty}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-fixEmpty"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-fixEmpty}{}}}
 \subsection{Method \code{fixEmpty()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$fixEmpty()}\if{html}{\out{</div>}}
@@ -235,8 +238,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-checkDefinitions"></a>}}
-\if{latex}{\out{\hypertarget{method-checkDefinitions}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-checkDefinitions"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-checkDefinitions}{}}}
 \subsection{Method \code{checkDefinitions()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$checkDefinitions()}\if{html}{\out{</div>}}
@@ -244,8 +247,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-runScenario"></a>}}
-\if{latex}{\out{\hypertarget{method-runScenario}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-runScenario"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-runScenario}{}}}
 \subsection{Method \code{runScenario()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$runScenario(
@@ -257,8 +260,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-showResultsSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-showResultsSummary}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-showResultsSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-showResultsSummary}{}}}
 \subsection{Method \code{showResultsSummary()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$showResultsSummary(election.df, description)}\if{html}{\out{</div>}}
@@ -266,8 +269,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-expectCompatible"></a>}}
-\if{latex}{\out{\hypertarget{method-expectCompatible}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-expectCompatible"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-expectCompatible}{}}}
 \subsection{Method \code{expectCompatible()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$expectCompatible(
@@ -278,8 +281,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceProcessor-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

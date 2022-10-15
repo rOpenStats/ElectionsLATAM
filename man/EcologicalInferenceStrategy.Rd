@@ -31,15 +31,15 @@ ken4rab
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{EcologicalInferenceStrategy$new()}}
-\item \href{#method-setProcessor}{\code{EcologicalInferenceStrategy$setProcessor()}}
-\item \href{#method-runEcologicalInference}{\code{EcologicalInferenceStrategy$runEcologicalInference()}}
-\item \href{#method-clone}{\code{EcologicalInferenceStrategy$clone()}}
+\item \href{#method-EcologicalInferenceStrategy-new}{\code{EcologicalInferenceStrategy$new()}}
+\item \href{#method-EcologicalInferenceStrategy-setProcessor}{\code{EcologicalInferenceStrategy$setProcessor()}}
+\item \href{#method-EcologicalInferenceStrategy-runEcologicalInference}{\code{EcologicalInferenceStrategy$runEcologicalInference()}}
+\item \href{#method-EcologicalInferenceStrategy-clone}{\code{EcologicalInferenceStrategy$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategy-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategy-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategy$new(seed = 143324)}\if{html}{\out{</div>}}
@@ -47,8 +47,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setProcessor"></a>}}
-\if{latex}{\out{\hypertarget{method-setProcessor}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategy-setProcessor"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategy-setProcessor}{}}}
 \subsection{Method \code{setProcessor()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategy$setProcessor(processor)}\if{html}{\out{</div>}}
@@ -56,8 +56,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-runEcologicalInference"></a>}}
-\if{latex}{\out{\hypertarget{method-runEcologicalInference}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategy-runEcologicalInference"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategy-runEcologicalInference}{}}}
 \subsection{Method \code{runEcologicalInference()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategy$runEcologicalInference(
@@ -68,8 +68,8 @@ ken4rab
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategy-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategy-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

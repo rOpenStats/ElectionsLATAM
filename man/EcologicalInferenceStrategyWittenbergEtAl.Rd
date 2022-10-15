@@ -25,32 +25,43 @@ wittenberg
 \describe{
 \item{\code{estsPG}}{estimation parameters}
 
+\item{\code{input}}{shares}
+
+\item{\code{dsOUTpre}}{shares}
+
 \item{\code{fracsPG}}{fractions}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{input}}{shares}
 }
 \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{EcologicalInferenceStrategyWittenbergEtAl$new()}}
-\item \href{#method-callDifp}{\code{EcologicalInferenceStrategyWittenbergEtAl$callDifp()}}
-\item \href{#method-paramsEstim}{\code{EcologicalInferenceStrategyWittenbergEtAl$paramsEstim()}}
-\item \href{#method-calcFractions}{\code{EcologicalInferenceStrategyWittenbergEtAl$calcFractions()}}
-\item \href{#method-paramsBoot}{\code{EcologicalInferenceStrategyWittenbergEtAl$paramsBoot()}}
-\item \href{#method-runEcologicalInference}{\code{EcologicalInferenceStrategyWittenbergEtAl$runEcologicalInference()}}
-\item \href{#method-clone}{\code{EcologicalInferenceStrategyWittenbergEtAl$clone()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-new}{\code{EcologicalInferenceStrategyWittenbergEtAl$new()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-callDifp}{\code{EcologicalInferenceStrategyWittenbergEtAl$callDifp()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-paramsEstim}{\code{EcologicalInferenceStrategyWittenbergEtAl$paramsEstim()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-calcFractions}{\code{EcologicalInferenceStrategyWittenbergEtAl$calcFractions()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-paramsBoot}{\code{EcologicalInferenceStrategyWittenbergEtAl$paramsBoot()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-runEcologicalInference}{\code{EcologicalInferenceStrategyWittenbergEtAl$runEcologicalInference()}}
+\item \href{#method-EcologicalInferenceStrategyWittenbergEtAl-clone}{\code{EcologicalInferenceStrategyWittenbergEtAl$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="ElectionsLATAM" data-topic="EcologicalInferenceStrategy" data-id="setProcessor">}\href{../../ElectionsLATAM/html/EcologicalInferenceStrategy.html#method-setProcessor}{\code{ElectionsLATAM::EcologicalInferenceStrategy$setProcessor()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="ElectionsLATAM" data-topic="EcologicalInferenceStrategy" data-id="setProcessor"><a href='../../ElectionsLATAM/html/EcologicalInferenceStrategy.html#method-EcologicalInferenceStrategy-setProcessor'><code>ElectionsLATAM::EcologicalInferenceStrategy$setProcessor()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyWittenbergEtAl$new(seed = 143324)}\if{html}{\out{</div>}}
@@ -58,8 +69,8 @@ wittenberg
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-callDifp"></a>}}
-\if{latex}{\out{\hypertarget{method-callDifp}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-callDifp"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-callDifp}{}}}
 \subsection{Method \code{callDifp()}}{
 CALL.DIFP
 Calculates penalty for given parameters
@@ -72,7 +83,8 @@ Calculates penalty for given parameters
   nR,
   nC,
   nP,
-  const
+  const,
+  w = 1/nP
 )}\if{html}{\out{</div>}}
 }
 
@@ -92,13 +104,15 @@ Calculates penalty for given parameters
 \item{\code{nP}}{- number of precincts}
 
 \item{\code{const}}{- weight for penalty}
+
+\item{\code{w}}{- weights for each observation}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-paramsEstim"></a>}}
-\if{latex}{\out{\hypertarget{method-paramsEstim}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-paramsEstim"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-paramsEstim}{}}}
 \subsection{Method \code{paramsEstim()}}{
 Ecological Inference in the RxC case
 Penalized Least Square Minimizer
@@ -111,7 +125,8 @@ Estimates parameters minimizing the penalized least squares criterion
   nR,
   nC,
   const = 0.001,
-  parSeed = -1
+  parSeed = -1,
+  w = 1/nrow(data)
 )}\if{html}{\out{</div>}}
 }
 
@@ -129,13 +144,15 @@ Estimates parameters minimizing the penalized least squares criterion
 \item{\code{const}}{- weight for penalty}
 
 \item{\code{parSeed}}{- Seed for parameters (optional)}
+
+\item{\code{w}}{- weights for each observation}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-calcFractions"></a>}}
-\if{latex}{\out{\hypertarget{method-calcFractions}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-calcFractions"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-calcFractions}{}}}
 \subsection{Method \code{calcFractions()}}{
 Calculate Fractions
 CALC.FRACTIONS
@@ -159,8 +176,8 @@ Calculate fractions from the parameters
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-paramsBoot"></a>}}
-\if{latex}{\out{\hypertarget{method-paramsBoot}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-paramsBoot"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-paramsBoot}{}}}
 \subsection{Method \code{paramsBoot()}}{
 Bootstrapping
 PARAMS.BOOT
@@ -183,8 +200,8 @@ PARAMS.BOOT
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-runEcologicalInference"></a>}}
-\if{latex}{\out{\hypertarget{method-runEcologicalInference}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-runEcologicalInference"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-runEcologicalInference}{}}}
 \subsection{Method \code{runEcologicalInference()}}{
 runEcologicalInference
 run ecological inference with current strategy
@@ -206,8 +223,8 @@ run ecological inference with current strategy
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EcologicalInferenceStrategyWittenbergEtAl-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EcologicalInferenceStrategyWittenbergEtAl-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -201,3 +201,17 @@ getOs <- function() {
   tolower(os)
 }
 
+#' removeDoubleSlash
+#' @export
+removeDoubleSlash <- function(path, url = FALSE){
+  if (length(path) == 0){
+    browser()
+  }
+  while (grepl("//", path, fixed = TRUE)){
+    path <- gsub("//", "/", path)
+  }
+  if (url){
+    path <- gsub(":/", "://", path, fixed = TRUE)
+  }
+  path
+}

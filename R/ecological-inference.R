@@ -936,8 +936,16 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       nd.input.check.col <- input.check.col
       nd.output.check.col <- nR + output.check.col
       ncol(newdata)
+      #debug
+      #browser()
+      #newdata <<- newdata
+      #nd.output.check.col <<- nd.output.check.col
+      #nd.input.check.col <<- nd.input.check.col
       # Empty rows
-      new.data.empty.rows <- which(newdata[, nd.input.check.col] == votes.share | newdata[, nd.output.check.col] == votes.share)
+
+      #newdata[newdata[, nd.input.check.col] == 0,]
+      #newdata[, nd.output.check.col]
+      new.data.empty.rows <- which(newdata[, nd.input.check.col] == votes.local.share | newdata[, nd.output.check.col] == votes.local.share)
       if (length(new.data.empty.rows) > 0) {
         logger$warn("Empty rows in preprocessing for EI",
                     new.data.empty.rows = length(new.data.empty.rows))

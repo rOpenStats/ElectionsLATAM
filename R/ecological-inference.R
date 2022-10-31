@@ -41,6 +41,7 @@
 #' @importFrom testthat expect_true
 #' @importFrom readr write_delim
 #' @importFrom readr write_file
+#' @import R.utils
 #' @author ken4rab
 #' @export
 EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
@@ -162,7 +163,7 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       }
       ret
     },
-    makeSankeyDiagram = function(output.path = NULL) {
+    makeSankeyDiagram = function(output.path = NULL, debug.webshot = FALSE) {
       logger <- getLogger(self)
       # A connection data frame is a list of flows with intensity for each flow
       links <- self$generateNormalizedOutput(indicator = "perc")
@@ -209,13 +210,19 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         file.exists(tmp.html.filepath)
 
         sankey.d3.html.filepath <- gsub("\\.png", ".html", sankey.d3.png.filepath)
-        file.copy(tmp.html.filepath, sankey.d3.html.filepath)
+        logger$info("Copying",
+                    tmp.html.filepath = tmp.html.filepath,
+                    sankey.d3.html.filepath = sankey.d3.html.filepath)
+        file.copy(tmp.html.filepath, sankey.d3.html.filepath, overwrite = TRUE)
         logger$info("Generating webshot",
           sankey.d3.png.filepath = sankey.d3.png.filepath
         )
+
+        relative.sankey.d3.png.filepath <- getRelativePath(sankey.d3.png.filepath, getwd())
         webshot::webshot(tmp.html.filepath,
-          sankey.d3.png.filepath,
-          vwidth = 1000, vheight = 900
+                         relative.sankey.d3.png.filepath,
+          vwidth = 1000, vheight = 900,
+          debug = debug.webshot
         )
       }
       sankey.network

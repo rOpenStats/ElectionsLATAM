@@ -26,6 +26,7 @@ Imports: lgr,
     magrittr,
     foreign,
     boot,
+    R.utils,
     networkD3,
     webshot,
     testthat

@@ -58,6 +58,7 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
     location.fields = NA,
     votes.field = NA,
     absent.field = NA,
+    blanco.field = NA,
     potential.votes.field = NULL,
     ignore.fields = NULL,
     col.types = NA,
@@ -84,6 +85,7 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
                           location.fields,
                           votes.field,
                           absent.field = "ausente",
+                          blanco.field = "blanco_y_nulo",
                           parties.mapping = NULL,
                           reverse.mapping = TRUE,
                           potential.votes.field = NULL,
@@ -98,6 +100,7 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       self$location.fields <- location.fields
       self$votes.field <- votes.field
       self$absent.field <- absent.field
+      self$blanco.field <- blanco.field
       self$potential.votes.field <- potential.votes.field
       self$ignore.fields <- ignore.fields
       self$col.types <- col.types
@@ -310,6 +313,7 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
     {
       share.fields <- self$getSharesFields(names(election.df))
       #total.votes <- rowSums(election.df[, share.fields])
+
       votes.rows <- which(total.votes > 0)
       for (share.field in share.fields) {
         election.df[votes.rows, share.field] <- election.df[votes.rows, share.field] / total.votes[votes.rows]
@@ -579,8 +583,10 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       input.shares.fields <<- input.shares.fields
       output.shares.fields <<- output.shares.fields
       if (!include.blancos) {
-        input.shares.fields <- input.shares.fields[input.shares.fields != "blanco_y_nulo"]
-        output.shares.fields <- output.shares.fields[output.shares.fields != "blanco_y_nulo"]
+        #input.shares.fields <- input.shares.fields[input.shares.fields != ]
+        #output.shares.fields <- output.shares.fields[output.shares.fields != "blanco_y_nulo"]
+        input.shares.fields <- input.shares.fields[input.shares.fields != self$blanco.field]
+        output.shares.fields <- output.shares.fields[output.shares.fields != self$blanco.field]
       }
       self$ein.strategy$setProcessor(self)
       self$ein.strategy$runEcologicalInference(
@@ -831,7 +837,9 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
           p.exp <- exp(g + d * covar[i])
           p.matrix <- matrix(p.exp, nrow = nR, byrow = T)
           p.sums <- apply(p.matrix, 1, sum)
-          p.sums <- p.sums + 1
+          # This code introduces error
+          #p.sums <- p.sums + 1
+          #p.sums <- p.sums + 1
           p.less <- p.matrix / p.sums
           ests[, , i] <- cbind(p.less, 1 - apply(p.less, 1, sum))
         }
@@ -839,7 +847,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         p.exp <- exp(g)
         p.matrix <- matrix(p.exp, nrow = nR, byrow = T)
         p.sums <- apply(p.matrix, 1, sum)
-        p.sums <- p.sums + 1
+        # This code introduces error in output missing
+        #p.sums <- p.sums + 1
         p.less <- p.matrix / p.sums
         ests <- cbind(p.less, 1 - apply(p.less, 1, sum))
       }
@@ -867,7 +876,6 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       logger <- getLogger(self)
       processor <- self$processor
       stopifnot(!is.null(processor))
-
       dsINpre.zones <- processor$input.election[, processor$location.fields]
       dsOutpre.zones <- processor$output.election[, processor$location.fields]
       stopifnot(identical(dsINpre.zones, dsOutpre.zones))

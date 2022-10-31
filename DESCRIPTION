@@ -1,7 +1,7 @@
 Package: ElectionsLATAM
 Type: Package
 Title: Statistics Methods for Applying in LATAM Elections
-Version: 0.1.2
+Version: 0.1.3
 Language: en-US
 Authors@R: c(
     person("Alejandro", "Baranek",,"abaranek@dc.uba.ar", c("cre", "aut")),

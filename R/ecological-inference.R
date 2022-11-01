@@ -536,7 +536,9 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       self$output.election <- self$convertShares2Votes(election.df = self$output.election,
                                                        election.desc = "output")
       self$fixLocationsAvailable(max.potential.votes.rel.dif = max.potential.votes.rel.dif)
-      if (include.ausentes) {
+      if (FALSE) #Legacy method for ausentes
+      {
+      #if (include.ausentes) {
         input.ausente.col <- input.votes.col
         input.votes.col <- ncol(self$input.election) + 1
         self$input.election[, input.votes.col] <- self$input.election[, input.ausente.col]
@@ -898,19 +900,27 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       }
       potential.votes <- apply(election.votes, MARGIN = 1, FUN = max)
       if (include.ausentes){
-        potential.votes <- cbind(potential.votes, potencial.votes)
+        potential.votes <- cbind(potential.votes, potential.votes)
       }
       else{
         potential.votes <- election.votes
       }
+      election.votes.dif <- potential.votes - election.votes
+      apply(election.votes.dif, MARGIN = 2, FUN = sum)
       potential.votes.share <- apply(potential.votes, MARGIN = 2, FUN = function(x){x/sum(x)})
-      #apply(potential.votes.share, MARGIN = 2, FUN = sum)
+      apply(potential.votes.share, MARGIN = 2, FUN = sum)
       #votes.local.share <- potential.votes / sum(potential.votes)
       # input
       dsINpre <- processor$input.election[, input.shares.fields]
-
       dsINpre <- processor$convertVotes2Shares(dsINpre, potential.votes[, 1])
       dsINpre <- cbind(dsINpre, "ausentes-1" = 1 - rowSums(dsINpre))
+      #debug
+      #browser()
+      which(dsINpre$`ausentes-1` > 0.05)
+      #potential.votes[1494, ]
+      #election.votes[1494,]
+      #processor$input.election[1494,]
+
       colnames(dsINpre)
       dsINpre <- as.matrix(dsINpre)
       self$dsINpre <- dsINpre

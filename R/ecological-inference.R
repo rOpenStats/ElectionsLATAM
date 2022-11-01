@@ -504,9 +504,9 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
     },
     runScenario = function(include.blancos = TRUE, include.ausentes = TRUE,
                            max.potential.votes.rel.dif = Inf) {
-      if (include.ausentes){
-        stop("FIXME. Now applies ausentes automatically in strategy. Cannot be called with TRUE")
-      }
+      # if (include.ausentes){
+      #   stop("FIXME. Now applies ausentes automatically in strategy. Cannot be called with TRUE")
+      # }
       logger <- getLogger(self)
       self$checkDefinitions()
       logger$info("Setting seed", seed = self$seed)
@@ -591,7 +591,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       self$ein.strategy$setProcessor(self)
       self$ein.strategy$runEcologicalInference(
         input.shares.fields,
-        output.shares.fields
+        output.shares.fields,
+        include.ausentes = include.ausentes
       )
       self$output.table
     },
@@ -702,7 +703,8 @@ EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
       self$processor
     },
     runEcologicalInference = function(input.shares.fields,
-                                      output.shares.fields) {
+                                      output.shares.fields,
+                                      include.ausentes = TRUE) {
       stop("Abstract class")
     }
   )
@@ -839,7 +841,6 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
           p.sums <- apply(p.matrix, 1, sum)
           # This code introduces error
           #p.sums <- p.sums + 1
-          #p.sums <- p.sums + 1
           p.less <- p.matrix / p.sums
           ests[, , i] <- cbind(p.less, 1 - apply(p.less, 1, sum))
         }
@@ -847,7 +848,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         p.exp <- exp(g)
         p.matrix <- matrix(p.exp, nrow = nR, byrow = T)
         p.sums <- apply(p.matrix, 1, sum)
-        # This code introduces error in output missing
+        # This code introduces error in output missing votes
         #p.sums <- p.sums + 1
         p.less <- p.matrix / p.sums
         ests <- cbind(p.less, 1 - apply(p.less, 1, sum))
@@ -872,7 +873,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param input.shares.fields shares fields in input table
     #' @param output.shares.fields shares fields in output table
     runEcologicalInference = function(input.shares.fields,
-                                      output.shares.fields) {
+                                      output.shares.fields,
+                                      include.ausentes = TRUE) {
       logger <- getLogger(self)
       processor <- self$processor
       stopifnot(!is.null(processor))
@@ -895,10 +897,19 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         browser()
       }
       potential.votes <- apply(election.votes, MARGIN = 1, FUN = max)
-      votes.local.share <- potential.votes / sum(potential.votes)
+      if (include.ausentes){
+        potential.votes <- cbind(potential.votes, potencial.votes)
+      }
+      else{
+        potential.votes <- election.votes
+      }
+      potential.votes.share <- apply(potential.votes, MARGIN = 2, FUN = function(x){x/sum(x)})
+      #apply(potential.votes.share, MARGIN = 2, FUN = sum)
+      #votes.local.share <- potential.votes / sum(potential.votes)
       # input
       dsINpre <- processor$input.election[, input.shares.fields]
-      dsINpre <- processor$convertVotes2Shares(dsINpre, potential.votes)
+
+      dsINpre <- processor$convertVotes2Shares(dsINpre, potential.votes[, 1])
       dsINpre <- cbind(dsINpre, "ausentes-1" = 1 - rowSums(dsINpre))
       colnames(dsINpre)
       dsINpre <- as.matrix(dsINpre)
@@ -912,7 +923,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
 
       # output
       dsOUTpre <- processor$output.election[, output.shares.fields]
-      dsOUTpre <- processor$convertVotes2Shares(dsOUTpre, potential.votes)
+      dsOUTpre <- processor$convertVotes2Shares(dsOUTpre, potential.votes[, 2])
       dsOUTpre <- cbind(dsOUTpre, "ausentes-2" = 1 - rowSums(dsOUTpre))
       # dsOUTpre %<>% filter(COD_ZONA %in% input.election$COD_ZONA)
       colnames(dsOUTpre)
@@ -960,7 +971,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
 
       #newdata[newdata[, nd.input.check.col] == 0,]
       #newdata[, nd.output.check.col]
-      new.data.empty.rows <- which(newdata[, nd.input.check.col] == votes.local.share | newdata[, nd.output.check.col] == votes.local.share)
+      new.data.empty.rows <- which(newdata[, nd.input.check.col] == potential.votes.share[,1] |
+                                     newdata[, nd.output.check.col] == potential.votes.share[,2])
       if (length(new.data.empty.rows) > 0) {
         logger$warn("Empty rows in preprocessing for EI",
                     new.data.empty.rows = length(new.data.empty.rows))
@@ -968,7 +980,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       }
       logger$info("ParamsEstim", nR = nR, nC = nC)
       self$estsPG <- self$paramsEstim(newdata, nR = nR, nC = nC,
-                                      w = votes.local.share)
+                                      w = potential.votes.share[,2])
       logger$info("calcFractions")
       self$fracsPG <- self$calcFractions(self$estsPG, nR = nR, nC = nC)
       colnames(self$fracsPG) <- colnames(dsOUTpre)
@@ -996,8 +1008,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       # for (c in 1:(ncol(VotosInput))) {
       #   VotosInput[, c] <- VotosInput[, c] * totals.input
       # }
-      VotosInput <- cbind(VotosInput, round(potential.votes - rowSums(VotosInput), 3))
-      VotosOutput <- cbind(VotosOutput, round(potential.votes - rowSums(VotosOutput), 3))
+      VotosInput <- cbind(VotosInput, round(potential.votes[, 1] - rowSums(VotosInput), 3))
+      VotosOutput <- cbind(VotosOutput, round(potential.votes[, 2] - rowSums(VotosOutput), 3))
 
       colnames(VotosInput) <- colnames(dsINpre)
       colnames(VotosOutput) <- colnames(dsOUTpre)

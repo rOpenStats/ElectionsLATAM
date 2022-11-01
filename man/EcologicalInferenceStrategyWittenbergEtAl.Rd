@@ -208,7 +208,8 @@ run ecological inference with current strategy
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategyWittenbergEtAl$runEcologicalInference(
   input.shares.fields,
-  output.shares.fields
+  output.shares.fields,
+  include.ausentes = TRUE
 )}\if{html}{\out{</div>}}
 }
 

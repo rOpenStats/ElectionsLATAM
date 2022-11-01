@@ -62,7 +62,8 @@ ken4rab
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceStrategy$runEcologicalInference(
   input.shares.fields,
-  output.shares.fields
+  output.shares.fields,
+  include.ausentes = TRUE
 )}\if{html}{\out{</div>}}
 }
 

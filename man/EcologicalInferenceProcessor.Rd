@@ -87,6 +87,7 @@ ken4rab
   location.fields,
   votes.field,
   absent.field = "ausente",
+  blanco.field = "blanco_y_nulo",
   parties.mapping = NULL,
   reverse.mapping = TRUE,
   potential.votes.field = NULL,
@@ -140,7 +141,10 @@ ken4rab
 \if{latex}{\out{\hypertarget{method-EcologicalInferenceProcessor-makeSankeyDiagram}{}}}
 \subsection{Method \code{makeSankeyDiagram()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$makeSankeyDiagram(output.path = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EcologicalInferenceProcessor$makeSankeyDiagram(
+  output.path = NULL,
+  debug.webshot = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 }

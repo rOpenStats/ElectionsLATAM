@@ -328,17 +328,16 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       logger <- getLogger(self)
       share.fields <- election.fields
       share.fields <- setdiff(share.fields, c(self$location.fields, self$votes.field, self$potential.votes.field))
-      not.candidate.fields <- c(
-        "blanco_y_nulo", self$absent.field,
+      not.candidate.fields <- c("blanco_y_nulo", self$absent.field,
         paste(self$absent.field, "1", sep = "-"),
         paste(self$absent.field, "2", sep = "-")
       )
       candidate.fields <- setdiff(share.fields, not.candidate.fields)
       not.candidate.fields <- sort(intersect(not.candidate.fields, share.fields), decreasing = TRUE)
       ret <- c(sort(candidate.fields), not.candidate.fields)
-      logger$trace("getSharesFields",
-                   share.fields = paste(ret, ", "),
-                   non.candidate.fields = paste(not.candidate.fields, ", "))
+      logger$debug("getSharesFields",
+                   share.fields = paste(ret, collapse = ", "),
+                   non.candidate.fields = paste(not.candidate.fields, collapse = ", "))
       ret
     },
     fixLocationsAvailable = function(max.potential.votes.rel.dif = Inf) {
@@ -801,7 +800,6 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
                            parSeed = -1, w = 1/nrow(data))
     {
       if (x[1] == -1) x <- seq_len(nrow(data))
-
       mx <- data[x, 1:nR]
       my <- data[x, (nR + 1):(nR + nC)]
       nP <- nrow(data)
@@ -852,6 +850,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         p.sums <- apply(p.matrix, 1, sum)
         # This code introduces error in output missing votes
         #p.sums <- p.sums + 1
+        #browser()
         p.less <- p.matrix / p.sums
         ests <- cbind(p.less, 1 - apply(p.less, 1, sum))
       }
@@ -909,6 +908,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       apply(election.votes.dif, MARGIN = 2, FUN = sum)
       potential.votes.share <- apply(potential.votes, MARGIN = 2, FUN = function(x){x/sum(x)})
       apply(potential.votes.share, MARGIN = 2, FUN = sum)
+      apply(election.votes.dif, MARGIN = 2, FUN = sum)
+
       #votes.local.share <- potential.votes / sum(potential.votes)
       # input
       dsINpre <- processor$input.election[, input.shares.fields]
@@ -992,6 +993,10 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       self$estsPG <- self$paramsEstim(newdata, nR = nR, nC = nC,
                                       w = potential.votes.share[,2])
       logger$info("calcFractions")
+
+      browser()
+      dsOUTpre
+      potential.votes[,2]
       self$fracsPG <- self$calcFractions(self$estsPG, nR = nR, nC = nC)
       colnames(self$fracsPG) <- colnames(dsOUTpre)
       rownames(self$fracsPG) <- colnames(dsINpre)
@@ -1000,6 +1005,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       # VotosPaso <- data1[,7:16]
       # cols.general <- ncol(input.election)
       # VotosInput <- processor$input.election[, c(2:(cols.general - 1))]
+
       VotosInput <- processor$input.election[, input.shares.fields]
       totals.input <- processor$input.election[, processor$votes.field]
       # cols.ballotage <- ncol(processor$output.election)
@@ -1023,9 +1029,11 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
 
       colnames(VotosInput) <- colnames(dsINpre)
       colnames(VotosOutput) <- colnames(dsOUTpre)
-      colnames(VotosInput)[ncol(VotosInput)] <- "ausentes-1"
-      colnames(VotosOutput)[ncol(VotosOutput)] <- "ausentes-2"
+      #colnames(VotosInput)[ncol(VotosInput)] <- "ausentes-1"
+      #colnames(VotosOutput)[ncol(VotosOutput)] <- "ausentes-2"
       processor$output.table <- round(self$fracsPG * colSums(VotosInput), 0)
+      # ausentes 2
+
       if (processor$reverse.mapping) {
         colnames <- colnames(processor$output.table)
         for (j in seq_len(length(colnames))) {
@@ -1073,3 +1081,4 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     }
   )
 )
+

@@ -583,7 +583,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       #debug
       input.shares.fields <<- input.shares.fields
       output.shares.fields <<- output.shares.fields
-      if (!include.blancos) {
+      if (!include.blancos)
+      {
         #input.shares.fields <- input.shares.fields[input.shares.fields != ]
         #output.shares.fields <- output.shares.fields[output.shares.fields != "blanco_y_nulo"]
         input.shares.fields <- input.shares.fields[input.shares.fields != self$blanco.field]
@@ -735,7 +736,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     dsOUTpre = NA,
     #' @field fracsPG fractions
     fracsPG = NA,
-    initialize = function(seed = 143324) {
+    initialize = function(seed = 143324)
+    {
       super$initialize(seed = seed)
     },
     #' @description
@@ -749,7 +751,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param nP    - number of precincts
     #' @param const - weight for penalty
     #' @param w       - weights for each observation
-    callDifp = function(p, mx, my, covar, nR, nC, nP, const, w = 1/nP) {
+    callDifp = function(p, mx, my, covar, nR, nC, nP, const, w = 1/nP)
+    {
       pen <- 0
       d <- seq(from = 0, to = 0, length = nR * (nC - 1))
       g <- p[1:(nR * (nC - 1))]
@@ -828,7 +831,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param nR    - number of rows
     #' @param nC    - number of columns
     #' @param covar - (Optional) Vector of covariates
-    calcFractions = function(p, nR, nC, covar = F) {
+    calcFractions = function(p, nR, nC, covar = F)
+    {
       d <- seq(from = 0, to = 0, length = nR * (nC - 1))
       g <- p[1:(nR * (nC - 1))]
       if (is.numeric(covar)) {
@@ -863,7 +867,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param nR          - number of rows
     #' @param nC          - number of columns
     #' @param bootSamples - number of bootstrap samples
-    paramsBoot = function(data, nR, nC, bootSamples) {
+    paramsBoot = function(data, nR, nC, bootSamples)
+    {
       output <- boot(data = data, statistic = self$paramsEstim,
                      R = bootSamples, nR = nR, nC = nC)
       return(output)
@@ -875,7 +880,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     #' @param output.shares.fields shares fields in output table
     runEcologicalInference = function(input.shares.fields,
                                       output.shares.fields,
-                                      include.ausentes = TRUE) {
+                                      include.ausentes = TRUE)
+    {
       logger <- getLogger(self)
       processor <- self$processor
       stopifnot(!is.null(processor))
@@ -895,7 +901,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         election.votes <<- election.votes
         self.debug <<- self
         stopifnot(min(election.votes[, 1] == election.votes[, 2]) == 1)
-        browser()
+        #browser()
       }
       potential.votes <- apply(election.votes, MARGIN = 1, FUN = max)
       if (include.ausentes){

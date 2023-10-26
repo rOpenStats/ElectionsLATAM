@@ -230,11 +230,13 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       }
       sankey.network
     },
-    getFilename = function(file.prefix, extension = "csv") {
+    getFilename = function(file.prefix, extension = "csv")
+    {
       paste(file.prefix, "-scen-", self$scenario, "-s-", self$seed, ".", extension, sep = "")
     },
     generateOutputJSON = function(output.path = NULL,
-                                  filename = self$getFilename(paste(self$election.name, "-ein", sep = ""), extension = "json")) {
+                                  filename = self$getFilename(paste(self$election.name, "-ein", sep = ""), extension = "json"))
+    {
       logger <- getLogger(self)
       self$generateOutput()
       eir.json <- jsonlite::toJSON(self$output, pretty = TRUE)
@@ -255,7 +257,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       }
       eir.json
     },
-    getBetab = function() {
+    getBetab = function()
+    {
       betab <- self$output.table[
         seq_len(nrow(self$output.table) - 1),
         seq_len(ncol(self$output.table) - 1)
@@ -276,7 +279,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       betab <- betab[, c("scenario", "source", names(betab)[seq_len(2 * total.cols)])]
       betab
     },
-    exportBetab = function(output.folder = NULL, overwrite = FALSE) {
+    exportBetab = function(output.folder = NULL, overwrite = FALSE)
+    {
       logger <- getLogger(self)
       betab <- self$getBetab()
       if (!is.null(output.folder)) {
@@ -293,7 +297,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         }
       }
     },
-    convertShares2Votes = function(election.df, election.desc) {
+    convertShares2Votes = function(election.df, election.desc)
+    {
       logger <- getLogger(self)
       share.fields <- self$getSharesFields(names(election.df))
       logger$debug("Converting shares.fields",
@@ -309,7 +314,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       }
       election.df
     },
-    convertVotes2Shares = function(election.df, total.votes = rowSums(election.df[, self$getSharesFields(names(election.df))]))
+    convertVotes2Shares = function(election.df,
+                                   total.votes = rowSums(election.df[, self$getSharesFields(names(election.df))]))
     {
       share.fields <- self$getSharesFields(names(election.df))
       #total.votes <- rowSums(election.df[, share.fields])
@@ -324,7 +330,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       }
       election.df
     },
-    getSharesFields = function(election.fields) {
+    getSharesFields = function(election.fields)
+    {
       logger <- getLogger(self)
       share.fields <- election.fields
       share.fields <- setdiff(share.fields, c(self$location.fields, self$votes.field, self$potential.votes.field))
@@ -340,7 +347,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
                    non.candidate.fields = paste(not.candidate.fields, collapse = ", "))
       ret
     },
-    fixLocationsAvailable = function(max.potential.votes.rel.dif = Inf) {
+    fixLocationsAvailable = function(max.potential.votes.rel.dif = Inf)
+    {
       logger <- getLogger(self)
       if (is.null(self$locations.available)) {
         locations.available.input <- self$input.election[, self$location.fields]
@@ -350,7 +358,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         )
         self$locations.available <- locations.available
       }
-      if (!is.null(self$locations.available)) {
+      if (!is.null(self$locations.available))
+      {
         logger$info("Starting with",
           input.locations = nrow(self$input.election),
           output.locations = nrow(self$output.election),
@@ -361,7 +370,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
           group_by_at(vars(self$location.fields)) %>%
           summarize(n = n()) %>%
           filter(n > 1)
-        if (nrow(repeated.locations) > 0) {
+        if (nrow(repeated.locations) > 0)
+        {
           logger$error("Repeated locations",
             nrow = nrow(repeated.locations),
             repeated.locations = paste(names(repeated.locations), repeated.locations[1, ], sep = "= ", collapse = "|")
@@ -373,14 +383,16 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         potential.input.only <- self$input.election %>% anti_join(self$locations.available, by = self$location.fields)
         potential.output.only <- self$output.election %>% anti_join(self$locations.available, by = self$location.fields)
 
-        if (nrow(potential.input.only) > 0){
+        if (nrow(potential.input.only) > 0)
+        {
           logger$warn("Districts only in potential.input.only",
                       nrow = nrow(potential.input.only),
                       total.votes = sum(potential.input.only[, self$votes.field])
                       )
           self$potential.input.only <- potential.input.only
         }
-        if (nrow(potential.output.only) > 0){
+        if (nrow(potential.output.only) > 0)
+        {
           logger$warn("Districts only in potential.output.only",
                       nrow = nrow(potential.output.only),
                       total.votes = sum(potential.output.only[, self$votes.field])
@@ -396,10 +408,12 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
           output.locations = nrow(self$output.election))
         # Check comparability between input-output
         votes.comparation.field <- self$votes.field
-        if (!is.null(self$potential.votes.field)) {
+        if (!is.null(self$potential.votes.field))
+        {
           votes.comparation.field <- self$potential.votes.field
         }
-        if (!is.infinite(max.potential.votes.rel.dif)) {
+        if (!is.infinite(max.potential.votes.rel.dif))
+        {
           potential.input <- self$input.election[, c(self$location.fields, votes.comparation.field)]
           potential.votes.col <- length(names(potential.input))
           # votes.comparation.field.input <- paste(names(potential.input)[potential.votes.col], "input", sep = "_")
@@ -458,7 +472,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       stopifnot(nrow(output.diff.input) == 0)
       self
     },
-    fixEmpty = function() {
+    fixEmpty = function()
+    {
       logger <- getLogger(self)
       empty.input.rows <- which(self$input.election[, self$votes.field] == 0)
       empty.output.rows <- which(self$output.election[, self$votes.field] == 0)
@@ -497,12 +512,14 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         )
       }
     },
-    checkDefinitions = function() {
+    checkDefinitions = function()
+    {
       stopifnot(self$votes.field %in% names(self$input.election))
       stopifnot(self$votes.field %in% names(self$output.election))
     },
     runScenario = function(include.blancos = TRUE, include.ausentes = TRUE,
-                           max.potential.votes.rel.dif = Inf) {
+                           max.potential.votes.rel.dif = Inf)
+    {
       # if (include.ausentes){
       #   stop("FIXME. Now applies ausentes automatically in strategy. Cannot be called with TRUE")
       # }
@@ -513,16 +530,21 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       if (is.null(self$input.election.original)) {
         self$input.election.original <- self$input.election
       }
-      else{
-        if (!identical(names(self$input.election), names(self$input.election.original))){
+      else
+      {
+        if (!identical(names(self$input.election), names(self$input.election.original)))
+        {
           self$input.election <- self$input.election.original
         }
       }
-      if (is.null(self$output.election.original)) {
+      if (is.null(self$output.election.original))
+      {
         self$output.election.original <- self$output.election
       }
-      else{
-        if (!identical(names(self$output.election), names(self$output.election.original))){
+      else
+      {
+        if (!identical(names(self$output.election), names(self$output.election.original)))
+        {
           self$output.election <- self$output.election.original
         }
       }
@@ -553,12 +575,14 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         names(total.votes.df) <- c("input.votes", "output.votes")
         total.votes.df[, "max.votes"] <- apply(total.votes.df, MARGIN = 1, FUN = max)
         total.votes.df <- as.data.frame(total.votes.df %>% select(max.votes))
-        if (!is.null(self$potential.votes.field)) {
+        if (!is.null(self$potential.votes.field))
+        {
           stopifnot(self$potential.votes.field %in% names(self$input.election))
           stopifnot(self$potential.votes.field %in% names(self$output.election))
           total.votes.input.df <- self$input.election[, self$potential.votes.field]
           total.votes.output.df <- self$output.election[, self$potential.votes.field]
-        } else {
+        } else
+        {
           total.votes.input.df <- total.votes.df
           total.votes.output.df <- total.votes.df
         }
@@ -598,11 +622,13 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
       )
       self$output.table
     },
-    showResultsSummary = function(election.df, description) {
+    showResultsSummary = function(election.df, description)
+    {
       logger <- getLogger(self)
       input.share.fields <- self$getSharesFields(names(election.df))
       results <- NULL
-      for (share.field in input.share.fields) {
+      for (share.field in input.share.fields)
+      {
         results[share.field] <- sum(election.df[, share.field], na.rm = TRUE)
       }
       total.votes <- sum(election.df[, self$votes.field], na.rm = TRUE)
@@ -613,20 +639,26 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
         total.votes = total.votes
       )
     },
-    expectCompatible = function(output.table.expected, tolerance.rel = 0.1) {
+    expectCompatible = function(output.table.expected, tolerance.rel = 0.1)
+    {
       logger <- getLogger(self)
       testthat::expect_identical(colnames(self$output.table), colnames(output.table.expected))
       testthat::expect_identical(rownames(self$output.table), rownames(output.table.expected))
-      for (i in seq_len(nrow(self$output.table))) {
-        for (j in seq_len(ncol(self$output.table))) {
-          if (output.table.expected[i, j] != 0) {
+      for (i in seq_len(nrow(self$output.table)))
+      {
+        for (j in seq_len(ncol(self$output.table)))
+        {
+          if (output.table.expected[i, j] != 0)
+          {
             diff.rel <- round((self$output.table[i, j] - output.table.expected[i, j]) /
               output.table.expected[i, j], 4)
-          } else {
+          } else
+          {
             diff.rel <- self$output.table[i, j] - output.table.expected[i, j]
           }
           test.passes <- abs(diff.rel) < tolerance.rel
-          if (!test.passes) {
+          if (!test.passes)
+          {
             logger$warn("expectCompatible- diff in Output Matrix",
               i = i, j = j,
               row = rownames(self$output.table)[i],
@@ -661,7 +693,8 @@ EcologicalInferenceProcessor <- R6Class("EcologicalInferenceProcessor",
 #' @export
 loadPivotTable <- function(input.filepath, col_types = cols(.default = col_number())) {
   input.election <- NULL
-  if (grepl("\\.csv", input.filepath)) {
+  if (grepl("\\.csv", input.filepath))
+  {
     input.election <-
       read_delim(
         input.filepath,
@@ -669,7 +702,8 @@ loadPivotTable <- function(input.filepath, col_types = cols(.default = col_numbe
         col_types = col_types
       )
   }
-  if (grepl("\\.xlsx?", input.filepath)) {
+  if (grepl("\\.xlsx?", input.filepath))
+  {
     input.election <-
       readxl::read_excel(
         input.filepath
@@ -696,17 +730,20 @@ EcologicalInferenceStrategy <- R6Class("EcologicalInferenceStrategy",
     processor = NULL,
     #' @field logger lgr configured for class
     logger = NA,
-    initialize = function(seed = 143324) {
+    initialize = function(seed = 143324)
+    {
       self$seed <- seed
       self$logger <- genLogger(self)
     },
-    setProcessor = function(processor) {
+    setProcessor = function(processor)
+    {
       self$processor <- processor
       self$processor
     },
     runEcologicalInference = function(input.shares.fields,
                                       output.shares.fields,
-                                      include.ausentes = TRUE) {
+                                      include.ausentes = TRUE)
+    {
       stop("Abstract class")
     }
   )
@@ -775,7 +812,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
           # diff <- diff + sum((yhat-my[i,-nC])^2) + (const*sum(gamma[,,i]^2));
           # diff <- diff + sum((yhat-my[i,-C])^2) + (10000*sum(gamma[,,i]^2));
         }
-      } else {
+      } else
+      {
         # debug
         # print(paste(nR, nC))
         gamma <- matrix(data = g, nrow = nR, ncol = nC - 1, byrow = T)
@@ -807,13 +845,17 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       my <- data[x, (nR + 1):(nR + nC)]
       nP <- nrow(data)
       covar <- F
-      if (ncol(data) > nR + nC) {
+      if (ncol(data) > nR + nC)
+      {
         covar <- data[x, nR + nC + 1]
-        if (parSeed[1] == -1) {
+        if (parSeed[1] == -1)
+        {
           parSeed <- rnorm(2 * nR * (nC - 1))
         }
-      } else {
-        if (parSeed[1] == -1) {
+      } else
+      {
+        if (parSeed[1] == -1)
+        {
           parSeed <- rnorm(nR * (nC - 1))
         }
       }
@@ -835,11 +877,13 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
     {
       d <- seq(from = 0, to = 0, length = nR * (nC - 1))
       g <- p[1:(nR * (nC - 1))]
-      if (is.numeric(covar)) {
+      if (is.numeric(covar))
+      {
         nP <- length(covar)
         ests <- array(0, c(nR, nC, nP))
         d <- p[(nR * (nC - 1) + 1):(2 * nR * (nC - 1))]
-        for (i in 1:nP) {
+        for (i in 1:nP)
+        {
           p.exp <- exp(g + d * covar[i])
           p.matrix <- matrix(p.exp, nrow = nR, byrow = T)
           p.sums <- apply(p.matrix, 1, sum)
@@ -848,7 +892,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
           p.less <- p.matrix / p.sums
           ests[, , i] <- cbind(p.less, 1 - apply(p.less, 1, sum))
         }
-      } else {
+      } else
+      {
         p.exp <- exp(g)
         p.matrix <- matrix(p.exp, nrow = nR, byrow = T)
         p.sums <- apply(p.matrix, 1, sum)
@@ -888,12 +933,14 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       dsINpre.zones <- processor$input.election[, processor$location.fields]
       dsOutpre.zones <- processor$output.election[, processor$location.fields]
       stopifnot(identical(dsINpre.zones, dsOutpre.zones))
-      if (is.null(processor$potential.votes.field)){
+      if (is.null(processor$potential.votes.field))
+      {
         election.votes <-
           cbind(processor$input.election[, processor$votes.field],
                 processor$output.election[, processor$votes.field])
       }
-      else{
+      else
+      {
         election.votes <-
           cbind(processor$input.election[, processor$potential.votes.field],
                 processor$output.election[, processor$potential.votes.field])
@@ -904,10 +951,12 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
         #browser()
       }
       potential.votes <- apply(election.votes, MARGIN = 1, FUN = max)
-      if (include.ausentes){
+      if (include.ausentes)
+      {
         potential.votes <- cbind(potential.votes, potential.votes)
       }
-      else{
+      else
+      {
         potential.votes <- election.votes
       }
       election.votes.dif <- potential.votes - election.votes
@@ -947,7 +996,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       dsOUTpre <- as.matrix(dsOUTpre)
 
       self$dsOUTpre <- dsOUTpre
-      if (length(empty.rows) > 0) {
+      if (length(empty.rows) > 0)
+      {
         locations.empty <- apply(processor$input.election[empty.rows, processor$location.fields], MARGIN = 1, FUN = function(x) paste(x, collapse = "-"))
         logger$warn("Removing rows with no votes",
           count = length(locations.empty),
@@ -990,7 +1040,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       #newdata[, nd.output.check.col]
       new.data.empty.rows <- which(newdata[, nd.input.check.col] == potential.votes.share[,1] |
                                      newdata[, nd.output.check.col] == potential.votes.share[,2])
-      if (length(new.data.empty.rows) > 0) {
+      if (length(new.data.empty.rows) > 0)
+      {
         logger$warn("Empty rows in preprocessing for EI",
                     new.data.empty.rows = length(new.data.empty.rows))
         newdata <- newdata[-new.data.empty.rows, ]
@@ -1020,7 +1071,8 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       # totals.output <- apply(VotosOutput, MARGIN = 1, FUN = sum)
       totals.output <- rowSums(VotosOutput)
 
-      if (length(empty.rows) > 0) {
+      if (length(empty.rows) > 0)
+      {
         totals.input <- totals.input[-empty.rows, ]
         VotosInput <- VotosInput[-empty.rows, ]
         VotosOutput <- VotosOutput[-empty.rows, ]
@@ -1040,9 +1092,11 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
       processor$output.table <- round(self$fracsPG * colSums(VotosInput), 0)
       # ausentes 2
 
-      if (processor$reverse.mapping) {
+      if (processor$reverse.mapping)
+      {
         colnames <- colnames(processor$output.table)
-        for (j in seq_len(length(colnames))) {
+        for (j in seq_len(length(colnames)))
+        {
           colname <- colnames[j]
           colname.mapping <- which(colname == processor$parties.mapping)
           if (length(colname.mapping) > 0) {

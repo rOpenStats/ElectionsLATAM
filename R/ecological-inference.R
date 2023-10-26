@@ -1000,7 +1000,7 @@ EcologicalInferenceStrategyWittenbergEtAl <- R6Class("EcologicalInferenceStrateg
                                       w = potential.votes.share[,2])
       logger$info("calcFractions")
 
-      browser()
+      #browser()
       dsOUTpre
       potential.votes[,2]
       self$fracsPG <- self$calcFractions(self$estsPG, nR = nR, nC = nC)

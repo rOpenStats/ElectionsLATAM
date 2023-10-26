@@ -15,7 +15,7 @@ test_that("Costa Rica ecological Inference", {
       # potential.votes.field = "habilitados",
       ignore.fields = "habilitados",
       col.types = cols(
-        .default = col_number(),
+        .default = col_double(),
         id_unidad = col_character()
       )
     )
